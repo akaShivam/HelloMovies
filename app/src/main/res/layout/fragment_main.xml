@@ -4,20 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivityFragment"
+    tools:context=".controller.MainActivityFragment"
     tools:showIn="@layout/activity_main">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="3dp">
+        android:layout_height="wrap_content">
 
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:cardCornerRadius="5dp"
-            app:cardElevation="10dp"
-            app:contentPadding="5dp">
+            app:cardElevation="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="10dp">
 
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
@@ -37,12 +38,10 @@
                     app:layout_constraintVertical_bias="0.0" />
 
                 <android.support.v7.widget.RecyclerView
-                    android:id="@+id/topRetedRecyclerView"
+                    android:id="@+id/topRatedRecyclerView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -50,6 +49,28 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView3"
                     app:layout_constraintVertical_bias="0.0" />
+
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/topRatedEmptyView"
+                    android:layout_width="match_parent"
+                    android:layout_height="185dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView3"
+                    app:layout_constraintVertical_bias="0.0"
+                    android:visibility="invisible">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="No movies found"/>
+
+                </android.support.constraint.ConstraintLayout>
+
             </android.support.constraint.ConstraintLayout>
         </android.support.v7.widget.CardView>
     </LinearLayout>

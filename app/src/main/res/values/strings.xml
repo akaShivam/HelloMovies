@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">My Movies</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_movie_detail">MovieDetailActivity</string>
+
+
+    <string name="poster_image_transition">PosterImage</string>
+    <string name="title_transition_name">Title</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.rahul.mymovies
+package com.rahul.mymovies.loaders
 
 import android.content.Context
 import android.support.v4.app.LoaderManager
@@ -8,22 +8,48 @@ import android.os.Bundle
 import android.support.v4.content.CursorLoader
 import android.support.v4.content.Loader
 import android.util.Log
-import com.rahul.mymovies.adapter.MovieListAdapter
+import android.widget.Toast
+import com.rahul.mymovies.adapter.TopRatedAdapter
 import com.rahul.mymovies.data.MoviesContract
+import com.rahul.mymovies.loaders.TopRatedLoader.Companion.ID_TOP_RATED_LOADER
 import com.rahul.mymovies.networkutils.NetworkCallHelper
 
-class TopRatedLoader(val context: Context?, val topRatedAdapter: MovieListAdapter) : LoaderManager.LoaderCallbacks<Cursor>{
-
-    val ID_TOP_RATED_LOADER = 1201
+class TopRatedLoader(val context: Context?, private val topRatedAdapter: TopRatedAdapter) : LoaderManager.LoaderCallbacks<Cursor>{
 
     var page = 1
-    var isFirst = true
-    var loading = true
+    private var isFirst = false
+    var isLoading = true
+
+
+    companion object {
+        const val ID_TOP_RATED_LOADER = 1201
+        var statusOfRequest = 0
+        class UpdateTopRatedDatabaseTask(private val topRatedLoader: TopRatedLoader) : AsyncTask<Int, Unit, Unit>() {
+            override fun doInBackground(vararg params: Int?) {
+                statusOfRequest = NetworkCallHelper.addTopMoviesFromJson(topRatedLoader.context!!, topRatedLoader.page)
+            }
+
+            override fun onPostExecute(result: Unit?) {
+                if(statusOfRequest == 1){
+                    topRatedLoader.onCreateLoader(ID_TOP_RATED_LOADER, null)
+                }else{
+
+                    if(topRatedLoader.page != 1){
+                        topRatedLoader.page = topRatedLoader.page - 1
+                    }
+                    topRatedLoader.isFirst = true
+                    topRatedLoader.isLoading = false
+                }
+                super.onPostExecute(result)
+            }
+        }
+    }
+
 
     override fun onCreateLoader(id: Int, args: Bundle?): Loader<Cursor> {
         when(id){
             ID_TOP_RATED_LOADER -> {
-                var maxPage = page.toString()
+                val maxPage = page.toString()
 
                 val topRatedQueryUri = MoviesContract.TopRatedEntry.CONTENT_URI
                 Log.v("Max PAge", maxPage)
@@ -45,19 +71,21 @@ class TopRatedLoader(val context: Context?, val topRatedAdapter: MovieListAdapte
             empty = data.getInt(0) == 0
         }
         if(empty){
-            UpdateTopRatedDatabaseTask().execute(1)
+            UpdateTopRatedDatabaseTask(this).execute(1)
         }
         else{
             Log.v("Swap Check", "${topRatedAdapter.itemCount} and ${data?.count}")
             if(topRatedAdapter.itemCount == data?.count && isFirst){
-                UpdateTopRatedDatabaseTask().execute()
+                UpdateTopRatedDatabaseTask(this).execute()
                 isFirst = false
             }else{
                 Log.v("Swapping", "I am swapping")
+                val startIndex = topRatedAdapter.itemCount
+                val endIndex = startIndex + data!!.count - 1
                 topRatedAdapter.swapCursor(data)
+                topRatedAdapter.notifyItemRangeChanged(startIndex, endIndex)
                 Log.v("Now size", topRatedAdapter.itemCount.toString())
-                isFirst = true
-                loading = true
+                isLoading = false
             }
 
         }
@@ -65,16 +93,11 @@ class TopRatedLoader(val context: Context?, val topRatedAdapter: MovieListAdapte
 
     override fun onLoaderReset(loader: Loader<Cursor>) {
         topRatedAdapter.swapCursor(null)
+        topRatedAdapter.notifyDataSetChanged()
     }
 
-    inner class UpdateTopRatedDatabaseTask : AsyncTask<Int, Unit, Unit>() {
-        override fun doInBackground(vararg params: Int?) {
-            NetworkCallHelper.addTopMoviesFromJson(context!!, page )
-        }
-
-        override fun onPostExecute(result: Unit?) {
-            onCreateLoader(ID_TOP_RATED_LOADER, null)
-            super.onPostExecute(result)
-        }
+    fun updatePage(){
+        page = page + 1
+        isFirst = true
     }
 }

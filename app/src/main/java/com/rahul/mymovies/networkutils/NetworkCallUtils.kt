@@ -7,6 +7,7 @@ import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONObjectRequestListener
+import com.androidnetworking.interfaces.StringRequestListener
 import org.json.JSONObject
 import java.net.HttpURLConnection
 import java.net.URL
@@ -44,7 +45,7 @@ object NetworkCallUtils {
         return particularMovieUri.toString()
     }
 
-    fun getListResponseFromUrl(urlString: String): String?{
+    fun getResponseFromUrl(urlString: String): String?{
         var returnResponse: String? = null
         Log.v("URL", urlString)
 
@@ -53,22 +54,29 @@ object NetworkCallUtils {
             val URL = URL(urlString)
 
             urlConnection = URL.openConnection() as HttpURLConnection
+            urlConnection.connectTimeout = 30 * 1000
+            urlConnection.readTimeout = 30 * 1000
 
-            val inputStream = urlConnection.getInputStream()
+            val inputStream = urlConnection.inputStream
+
             val scanner = Scanner(inputStream)
             scanner.useDelimiter("\\A")
-
             val hasInput = scanner.hasNext()
 
             if (hasInput) {
                 returnResponse = scanner.next()
             }
             scanner.close()
-        }finally {
+
+        }catch(e : Exception){
+            Log.v("ERROR", "ERROR MAKING NETWORK REQUEST")
+        }
+        finally {
             urlConnection?.disconnect()
         }
 
-        Log.v("Hi", returnResponse)
+        Log.v("Hi", returnResponse.toString())
         return returnResponse
     }
+
 }

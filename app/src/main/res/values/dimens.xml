@@ -1,3 +1,8 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="app_bar_height">200dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
+
+    <dimen name = "card_poster_width">110dp</dimen>
+    <dimen name = "card_poster_height">165dp</dimen>
 </resources>
