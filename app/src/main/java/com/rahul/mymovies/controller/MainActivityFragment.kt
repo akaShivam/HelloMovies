@@ -18,9 +18,6 @@ import com.rahul.mymovies.loaders.TopRatedLoader
 import android.util.Pair as UtilPair
 import kotlinx.android.synthetic.main.fragment_main.*
 
-/**
- * A placeholder fragment containing a simple view.
- */
 class MainActivityFragment : Fragment(){
 
 

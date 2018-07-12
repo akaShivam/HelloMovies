@@ -34,7 +34,7 @@ class TopRatedAdapter(val context: Context, val itemClick: (Movie, View) -> Unit
     }
 
     override fun onBindViewHolder(holder: MovieListViewHolder, position: Int) {
-        if (mCursor != null && !mCursor!!.isClosed) {
+        if (mCursor != null && !mCursor!!.isClosed && position< itemCount) {
             mCursor!!.moveToPosition(position)
             holder.bind(context, mCursor)
             startAddAnimation(holder.itemView, position)

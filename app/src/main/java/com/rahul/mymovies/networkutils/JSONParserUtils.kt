@@ -3,6 +3,9 @@ package com.rahul.mymovies.networkutils
 import android.content.ContentValues
 import android.util.Log
 import com.rahul.mymovies.data.MoviesContract
+import com.rahul.mymovies.models.MovieCast
+import com.rahul.mymovies.models.MovieReview
+import com.rahul.mymovies.models.MovieVideo
 import org.json.JSONException
 import org.json.JSONObject
 
@@ -18,6 +21,18 @@ object JSONParserUtils {
     const val TMDB_OVERVIEW = "overview"
     const val TMDB_RELEASE_DATE = "release_date"
     const val TMDB_BACKDROP_PATH = "backdrop_path"
+
+    const val TMDB_VIDEO_KEY = "key"
+    const val TMDB_VIDEO_SITE = "site"
+
+    const val TMDB_REVIEW_AUTHOR = "author"
+    const val TMDB_REVIEW_CONTENT = "content"
+    const val TMDB_REVIEW_URL = "url"
+
+    const val TMDB_CAST_ARRAY = "cast"
+    const val TMDB_CAST_CHARACTER = "character"
+    const val TMDB_CAST_NAME = "name"
+    const val TMDB_CAST_PROFILE = "profile_path"
 
     fun returnMovieFromMovieList(JSONStr : String?, pageNo: Int) : Array<ContentValues?>{
 
@@ -67,5 +82,79 @@ object JSONParserUtils {
             Log.d("JSON Error", "Not able to parse json")
         }
         return parsedTopMovies
+    }
+
+    fun getMovieVideos(response: JSONObject?): ArrayList<MovieVideo> {
+        val videoList = ArrayList<MovieVideo>()
+        if(response == null){
+            return videoList
+        }
+        try{
+            val responseVideos = response.getJSONObject("videos")
+            val listArray = responseVideos.getJSONArray(TMDB_RESULTS)
+            var videoObject: JSONObject
+            var key = ""
+            var site = ""
+            for (i in 0 until listArray.length()) {
+                videoObject = listArray.getJSONObject(i)
+                key = videoObject.getString(TMDB_VIDEO_KEY)
+                site = videoObject.getString(TMDB_VIDEO_SITE)
+                videoList.add(MovieVideo(key, site))
+            }
+        }catch(e: Exception){
+            Log.v("Error", "Movie video error")
+        }
+        return videoList
+
+    }
+
+    fun getMovieReviews(response: JSONObject?): ArrayList<MovieReview> {
+        val reviewList = ArrayList<MovieReview>()
+        if(response == null){
+            return reviewList
+        }
+        try{
+            val responseReviews = response.getJSONObject("reviews")
+            val listArray = responseReviews.getJSONArray(TMDB_RESULTS)
+            var reviewObject: JSONObject
+            var author: String
+            var url: String
+            var content: String
+            for (i in 0 until listArray.length()) {
+                reviewObject = listArray.getJSONObject(i)
+                author = reviewObject.getString(TMDB_REVIEW_AUTHOR)
+                content = reviewObject.getString(TMDB_REVIEW_CONTENT)
+                url = reviewObject.getString(TMDB_REVIEW_URL)
+                reviewList.add(MovieReview(author, content, url))
+            }
+        }catch(e: Exception){
+            Log.v("Error", "Movie video error")
+        }
+        return reviewList
+    }
+
+    fun getMovieCredits(response: JSONObject?): ArrayList<MovieCast> {
+        val castList = ArrayList<MovieCast>()
+        if(response == null){
+            return castList
+        }
+        try{
+            val responseCredits = response.getJSONObject("credits")
+            val listArray = responseCredits.getJSONArray(TMDB_CAST_ARRAY)
+            var castObject: JSONObject
+            var character = ""
+            var name = ""
+            var posterPath = ""
+            for (i in 0 until listArray.length()) {
+                castObject = listArray.getJSONObject(i)
+                character = castObject.getString(TMDB_CAST_CHARACTER)
+                name = castObject.getString(TMDB_CAST_NAME)
+                posterPath = castObject.getString(TMDB_CAST_PROFILE)
+                castList.add(MovieCast(character, name, posterPath))
+            }
+        }catch(e: Exception){
+            Log.v("Error", "Movie video error")
+        }
+        return castList
     }
 }

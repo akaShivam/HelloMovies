@@ -10,6 +10,7 @@ abstract class EndlessScrollListener(val loaderId: Int, val loaderManager: Loade
     lateinit var topRatedLoader : TopRatedLoader
     lateinit var mLayoutManager: LinearLayoutManager
 
+    var totalLoadedPosition : Int = 0
 
     constructor(loaderId: Int, loaderManager: LoaderManager,
                 loader: TopRatedLoader, layoutManager: LinearLayoutManager) : this(loaderId, loaderManager){
@@ -38,6 +39,23 @@ abstract class EndlessScrollListener(val loaderId: Int, val loaderManager: Loade
                             topRatedLoader.isLoading = true
                             topRatedLoader.updatePage()
                             loaderManager.restartLoader(TopRatedLoader.ID_TOP_RATED_LOADER, null, topRatedLoader)
+                        }
+                    }
+                }
+            }
+
+            if(dx < 0){
+                when(loaderId) {
+                    TopRatedLoader.ID_TOP_RATED_LOADER -> {
+                        val visibleItemCount = mLayoutManager.childCount
+                        val totalItemCount = mLayoutManager.itemCount
+                        val pastVisibleItem = mLayoutManager.findFirstVisibleItemPosition()
+
+                        if (!topRatedLoader.isLoading) {
+                            if (visibleItemCount + pastVisibleItem >= totalItemCount - 5) {
+                                topRatedLoader.isLoading = true
+                                loaderManager.restartLoader(TopRatedLoader.ID_TOP_RATED_LOADER, null, topRatedLoader)
+                            }
                         }
                     }
                 }

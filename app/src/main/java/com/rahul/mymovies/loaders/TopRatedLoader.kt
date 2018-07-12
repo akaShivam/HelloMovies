@@ -78,13 +78,15 @@ class TopRatedLoader(val context: Context?, private val topRatedAdapter: TopRate
             if(topRatedAdapter.itemCount == data?.count && isFirst){
                 UpdateTopRatedDatabaseTask(this).execute()
                 isFirst = false
-            }else{
+            }else if(topRatedAdapter.itemCount < data!!.count){
                 Log.v("Swapping", "I am swapping")
                 val startIndex = topRatedAdapter.itemCount
-                val endIndex = startIndex + data!!.count - 1
+                val endIndex = startIndex + data.count - 1
                 topRatedAdapter.swapCursor(data)
                 topRatedAdapter.notifyItemRangeChanged(startIndex, endIndex)
                 Log.v("Now size", topRatedAdapter.itemCount.toString())
+                isLoading = false
+            }else{
                 isLoading = false
             }
 

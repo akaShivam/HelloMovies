@@ -36,13 +36,49 @@ object NetworkCallUtils {
         return topRatedQueryUri.toString()
     }
 
-    fun getUrlForParticulateMovie(movieId: String): String {
-        val particularMovieUri = Uri.parse("$PARTICULAR_MOVIE_URL/$movieId").buildUpon()
+    fun getUrlForMovieVideos(movieId: Int): String {
+        val particularMovieVideoUri = Uri.parse("$PARTICULAR_MOVIE_URL/$movieId/videos").buildUpon()
                 .appendQueryParameter(APPID_PARAM, APP_ID1)
                 .appendQueryParameter(LANGUAGE_PARAM, "en-US")
                 .build()
 
-        return particularMovieUri.toString()
+        return particularMovieVideoUri.toString()
+    }
+
+    fun getUrlForMovieReviews(movieId: Int): String {
+        val particularMovieReviewUri = Uri.parse("$PARTICULAR_MOVIE_URL/$movieId/reviews").buildUpon()
+                .appendQueryParameter(APPID_PARAM, APP_ID1)
+                .appendQueryParameter(LANGUAGE_PARAM, "en-US")
+                .build()
+
+        return particularMovieReviewUri.toString()
+    }
+
+    fun getUrlForMovieCredits(movieId: Int) : String {
+        val particularMovieCreditsUri = Uri.parse("$PARTICULAR_MOVIE_URL/$movieId/credits").buildUpon()
+                .appendQueryParameter(APPID_PARAM, APP_ID1)
+                .build()
+
+        return particularMovieCreditsUri.toString()
+    }
+
+    fun getUrlForMovieDetailsAndVideos(movieId: Int) : String {
+        val particularMovieDetailsandVideoUri = Uri.parse("$PARTICULAR_MOVIE_URL/$movieId").buildUpon()
+                .appendQueryParameter(APPID_PARAM, APP_ID1)
+                .appendQueryParameter(LANGUAGE_PARAM, "en-US")
+                .appendQueryParameter("append_to_response", "videos")
+                .build()
+
+        return particularMovieDetailsandVideoUri.toString()
+    }
+
+    fun getUrlForTmdbResponse(movieId: Int) : String {
+        val tmdbUri = Uri.parse("$PARTICULAR_MOVIE_URL/$movieId").buildUpon()
+                .appendQueryParameter(APPID_PARAM, APP_ID1)
+                .appendQueryParameter(LANGUAGE_PARAM, "en-US")
+                .appendQueryParameter("append_to_response", "videos,reviews,credits")
+                .build()
+        return tmdbUri.toString()
     }
 
     fun getResponseFromUrl(urlString: String): String?{

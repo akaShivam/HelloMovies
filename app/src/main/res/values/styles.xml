@@ -22,5 +22,7 @@
     <style name="MovieDetailTheme" parent="AppTheme.NoActionBar">
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowEnterTransition">@transition/movie_detail_transition_out</item>
+        <item name="android:windowExitTransition">@transition/movie_detail_transition_out</item>
     </style>
 </resources>
