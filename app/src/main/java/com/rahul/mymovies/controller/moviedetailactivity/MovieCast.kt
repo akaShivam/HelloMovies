@@ -1,4 +1,4 @@
-package com.rahul.mymovies.models
+package com.rahul.mymovies.controller.moviedetailactivity
 
 class MovieCast(val charcter: String, val name: String, val poster_path: String){
     fun getPosterPath() : String{

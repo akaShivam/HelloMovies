@@ -4,25 +4,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:descendantFocusability="beforeDescendants"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".controller.MovieDetailActivity"
-    tools:showIn="@layout/activity_movie_detail"
-    android:id="@+id/movieContentScrollView"
-    android:descendantFocusability="beforeDescendants">
+    tools:context=".controller.moviedetailactivity.MovieDetailActivity">
 
     <LinearLayout
+        android:id="@+id/movieContentScrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:animateLayoutChanges="true">
 
         <android.support.v7.widget.CardView
+            android:id="@+id/cardView3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            app:cardElevation="5dp"
-            app:contentPadding="5dp"
-            app:layout_anchor="@id/app_bar"
-            app:layout_anchorGravity="bottom|end">
+            android:layout_margin="4dp"
+            app:cardCornerRadius="2dp"
+            app:cardElevation="5dp">
 
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
@@ -51,18 +50,77 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/moviePosterImage"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:text="Jurrasic World and the fallen Kingdom" />
+                    tools:text="Jurrasic World and the fallen Kingdom"
+                    android:textColor="@android:color/black"/>
+
+                <TextView
+                    android:id="@+id/movieReleaseDate"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/moviePosterImage"
+                    app:layout_constraintTop_toBottomOf="@+id/movieRating"
+                    app:layout_constraintVertical_bias="1.0"
+                    tools:text="Relesased: 4 July 2018" />
+
+                <TextView
+                    android:id="@+id/movieTag"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/moviePosterImage"
+                    app:layout_constraintTop_toBottomOf="@+id/movieTitleTextView"
+                    tools:text="Apple" />
+
+                <TextView
+                    android:id="@+id/movieRating"
+                    android:layout_width="61dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="92dp"
+                    android:text="TextView"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toStartOf="@+id/ratingBar"
+                    app:layout_constraintTop_toTopOf="@+id/ratingBar" />
+
+                <RatingBar
+                    android:id="@+id/ratingBar"
+                    style="?android:attr/ratingBarStyleIndicator"
+                    android:layout_width="180dp"
+                    android:layout_height="42dp"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="16dp"
+                    android:isIndicator="true"
+                    android:max="5"
+                    android:scaleX=".5"
+                    android:scaleY=".5"
+                    android:transformPivotX="0dp"
+                    android:transformPivotY="0dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/moviePosterImage"
+                    app:layout_constraintTop_toBottomOf="@+id/movieTag"
+                    app:layout_constraintVertical_bias="1.0" />
 
             </android.support.constraint.ConstraintLayout>
         </android.support.v7.widget.CardView>
 
 
         <android.support.v7.widget.CardView
+            android:id="@+id/cardView4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_margin="4dp"
+            app:cardCornerRadius="2dp"
             app:cardElevation="5dp"
-            app:contentPadding="5dp">
+            app:cardBackgroundColor="@color/gray_shade_2">
 
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
@@ -75,7 +133,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
+                    android:fontFamily="sans-serif-light"
                     android:text="Overview"
+                    android:textColor="@color/gray_shade_9"
+                    android:textSize="24sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -83,135 +144,41 @@
                     android:id="@+id/movieOverview"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="16dp"
                     android:layout_marginEnd="16dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
                     android:text="TextView"
+                    android:textColor="@color/gray_shade_7"
+                    android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView" />
             </android.support.constraint.ConstraintLayout>
+
         </android.support.v7.widget.CardView>
 
-        <android.support.v7.widget.CardView
-            android:id="@+id/movieVideosCardView"
-            android:layout_width="match_parent"
+        <ProgressBar
+            android:id="@+id/movieDetailsLoadingProgressBar"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            app:cardElevation="5dp"
-            app:contentPadding="5dp">
-
-            <android.support.constraint.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-
-                <TextView
-                    android:id="@+id/textViewCast"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:text="Cast"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/movieCastListRecyclerView"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:orientation="horizontal"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textViewCast" />
-            </android.support.constraint.ConstraintLayout>
-        </android.support.v7.widget.CardView>
-
+            android:layout_gravity="center"
+            android:layout_margin="5dp"/>
 
         <android.support.v7.widget.CardView
-            android:id="@+id/movieVideosCardView"
+            android:id="@+id/noInternetCardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_margin="4dp"
+            app:cardCornerRadius="2dp"
             app:cardElevation="5dp"
-            app:contentPadding="5dp">
-
-            <android.support.constraint.ConstraintLayout
+            app:cardBackgroundColor="@android:color/holo_red_light"
+            android:visibility="gone">
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-
-                <TextView
-                    android:id="@+id/textView2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:text="Videos"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/movieVideoListRecyclerView"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:orientation="horizontal"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView2" />
-            </android.support.constraint.ConstraintLayout>
-        </android.support.v7.widget.CardView>
-
-
-
-        <android.support.v7.widget.CardView
-            android:id="@+id/movieReviewsCardView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            app:cardElevation="5dp"
-            app:contentPadding="5dp">
-
-            <android.support.constraint.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-
-                <TextView
-                    android:id="@+id/textViewReview"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:text="Videos"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/movieReviewListRecyclerView"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textViewReview" />
-            </android.support.constraint.ConstraintLayout>
+                android:layout_height="wrap_content"
+                android:text="Something went wrong! Try checking the internet connection"/>
         </android.support.v7.widget.CardView>
 
     </LinearLayout>

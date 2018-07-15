@@ -14,15 +14,14 @@ import com.rahul.mymovies.R
 import com.rahul.mymovies.data.MoviesContract
 import com.rahul.mymovies.models.Movie
 
-
-class TopRatedAdapter(val context: Context, val itemClick: (Movie, View) -> Unit) : RecyclerView.Adapter<TopRatedAdapter.MovieListViewHolder>() {
-    private var lastLoadedPosition = -1
+class DatabaseListAdapter(val context: Context, private val itemClick: (Movie, View) -> Unit) : RecyclerView.Adapter<DatabaseListAdapter.MovieListViewHolder>() {
+    private var lastLoadedPosition = 4
     private var mCursor: Cursor? = null
 
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieListViewHolder {
-        val itemView = LayoutInflater.from(context).inflate(R.layout.top_rated_card, parent, false)
+
+        val itemView = LayoutInflater.from(context).inflate(R.layout.movie_list_small, parent, false)
         return MovieListViewHolder(itemView, itemClick)
     }
 
@@ -34,13 +33,12 @@ class TopRatedAdapter(val context: Context, val itemClick: (Movie, View) -> Unit
     }
 
     override fun onBindViewHolder(holder: MovieListViewHolder, position: Int) {
-        if (mCursor != null && !mCursor!!.isClosed && position< itemCount) {
+        if (mCursor != null && !mCursor!!.isClosed && position < itemCount) {
             mCursor!!.moveToPosition(position)
             holder.bind(context, mCursor)
             startAddAnimation(holder.itemView, position)
         }
     }
-
 
     override fun onViewDetachedFromWindow(holder: MovieListViewHolder) {
         holder.clearAnimation()
@@ -55,9 +53,10 @@ class TopRatedAdapter(val context: Context, val itemClick: (Movie, View) -> Unit
     }
 
 
-    inner class MovieListViewHolder(itemView: View, val itemClick: (Movie, View) -> Unit) : RecyclerView.ViewHolder(itemView) {
+    inner class MovieListViewHolder(itemView: View, private val itemClick: (Movie, View) -> Unit) : RecyclerView.ViewHolder(itemView) {
         private val titleView = itemView.findViewById<TextView>(R.id.movieTitleTextView)
         private val posterView = itemView.findViewById<ImageView>(R.id.moviePosterImage)
+
 
         fun bind(context: Context, mCursor: Cursor?) {
             val movieId = mCursor!!.getInt(MoviesContract.TopRatedEntry.INDEX_COLUMN_MOVIE_ID_KEY)
@@ -68,7 +67,7 @@ class TopRatedAdapter(val context: Context, val itemClick: (Movie, View) -> Unit
             val imagePath = mCursor.getString(MoviesContract.TopRatedEntry.INDEX_COLUMN_POSTER_PATH)
             val backdropPath = mCursor.getString(MoviesContract.TopRatedEntry.INDEX_COLUMN_BACKDROP_PATH)
 
-            val movie = Movie(movieId, title, overview,imagePath, backdropPath, releaseDate, averageVote)
+            val movie = Movie(movieId, title, overview, imagePath, backdropPath, releaseDate, averageVote)
             titleView.text = movie.title
             Glide.with(context).load(movie.imagePath)
                     .into(posterView)
@@ -82,6 +81,14 @@ class TopRatedAdapter(val context: Context, val itemClick: (Movie, View) -> Unit
     }
 
     fun swapCursor(cursor: Cursor?) {
-        mCursor = cursor
+        if(cursor == null || mCursor == null){
+            mCursor = cursor
+            notifyDataSetChanged()
+        }else{
+            mCursor = cursor
+            val startIndex = mCursor!!.count
+            val endIndex = startIndex + cursor.count - 1
+            notifyItemRangeInserted(startIndex, endIndex)
+        }
     }
 }

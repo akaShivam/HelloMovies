@@ -20,6 +20,8 @@ object NetworkCallUtils {
     private const val APP_ID1 = "17a9e2faba4b24afe4bbf42451dd32b0"
 
     private const val TOP_RATED_MOVIE_URl = "https://api.themoviedb.org/3/movie/top_rated"
+    private const val NOW_PLAYING_MOVIE_URl = "https://api.themoviedb.org/3/movie/now_playing"
+    private const val MOST_POPULAR_MOVIE_URl = "https://api.themoviedb.org/3/movie/popular"
     private const val PARTICULAR_MOVIE_URL = "https://api.themoviedb.org/3/movie"
 
     private const val APPID_PARAM = "api_key"
@@ -28,6 +30,26 @@ object NetworkCallUtils {
 
     fun getUrlForTopRated(pageNo: Int): String {
         val topRatedQueryUri = Uri.parse(TOP_RATED_MOVIE_URl).buildUpon()
+                .appendQueryParameter(APPID_PARAM, APP_ID1)
+                .appendQueryParameter(LANGUAGE_PARAM, "en-US")
+                .appendQueryParameter(PAGE_PARAM, pageNo.toString())
+                .build()
+
+        return topRatedQueryUri.toString()
+    }
+
+    fun getUrlForMostPopular(pageNo: Int): String {
+        val topRatedQueryUri = Uri.parse(MOST_POPULAR_MOVIE_URl).buildUpon()
+                .appendQueryParameter(APPID_PARAM, APP_ID1)
+                .appendQueryParameter(LANGUAGE_PARAM, "en-US")
+                .appendQueryParameter(PAGE_PARAM, pageNo.toString())
+                .build()
+
+        return topRatedQueryUri.toString()
+    }
+
+    fun getUrlForNowPlaying(pageNo: Int): String {
+        val topRatedQueryUri = Uri.parse(NOW_PLAYING_MOVIE_URl).buildUpon()
                 .appendQueryParameter(APPID_PARAM, APP_ID1)
                 .appendQueryParameter(LANGUAGE_PARAM, "en-US")
                 .appendQueryParameter(PAGE_PARAM, pageNo.toString())

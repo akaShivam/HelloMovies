@@ -10,7 +10,8 @@ class MoviesProvider : ContentProvider() {
     lateinit var mOpenHelper: MoviesDbHelper
 
     private val CODE_TOP_RATED = 100
-
+    private val CODE_MOST_POPULAR = 200
+    private val CODE_NOW_PLAYING = 300
 
     private val sURIMatcher = UriMatcher(UriMatcher.NO_MATCH)
 
@@ -18,6 +19,8 @@ class MoviesProvider : ContentProvider() {
         val authority = MoviesContract.CONTENT_AUTHORITY
 
         sURIMatcher.addURI(authority, MoviesContract.PATH_TOP_RATED, CODE_TOP_RATED)
+        sURIMatcher.addURI(authority, MoviesContract.PATH_MOST_POPULAR, CODE_MOST_POPULAR)
+        sURIMatcher.addURI(authority, MoviesContract.PATH_NOW_PLAYING, CODE_NOW_PLAYING)
     }
 
 
@@ -41,6 +44,26 @@ class MoviesProvider : ContentProvider() {
                         sortOrder)
             }
 
+            CODE_MOST_POPULAR -> {
+                cursor = mOpenHelper.readableDatabase.query(
+                        MoviesContract.MostPopularEntry.TABLE_NAME,
+                        null,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder)
+            }
+            CODE_NOW_PLAYING -> {
+                cursor = mOpenHelper.readableDatabase.query(
+                        MoviesContract.NowPlayingEntry.TABLE_NAME,
+                        null,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder)
+            }
             else -> throw UnsupportedOperationException("Unknown uri $uri")
         }
 
@@ -78,6 +101,51 @@ class MoviesProvider : ContentProvider() {
                 return rowsInserted
             }
 
+
+            CODE_MOST_POPULAR -> {
+                db.beginTransaction()
+                var rowsInserted = 0
+
+                try{
+                    for(value: ContentValues in values!!){
+                        val _id = db.insert(MoviesContract.MostPopularEntry.TABLE_NAME, null, value)
+                        if(_id != -1L){
+                            rowsInserted++
+                        }
+                    }
+                    db.setTransactionSuccessful()
+                }finally {
+                    db.endTransaction()
+                }
+
+                if(rowsInserted > 0){
+                    context.contentResolver.notifyChange(uri, null)
+                }
+                return rowsInserted
+            }
+
+            CODE_NOW_PLAYING -> {
+                db.beginTransaction()
+                var rowsInserted = 0
+
+                try{
+                    for(value: ContentValues in values!!){
+                        val _id = db.insert(MoviesContract.NowPlayingEntry.TABLE_NAME, null, value)
+                        if(_id != -1L){
+                            rowsInserted++
+                        }
+                    }
+                    db.setTransactionSuccessful()
+                }finally {
+                    db.endTransaction()
+                }
+
+                if(rowsInserted > 0){
+                    context.contentResolver.notifyChange(uri, null)
+                }
+                return rowsInserted
+            }
+
             else -> return super.bulkInsert(uri, values)
         }
     }
@@ -94,18 +162,6 @@ class MoviesProvider : ContentProvider() {
         return ""
     }
 
-    fun checkIfEmpty(uri: Uri?) : Boolean {
-        var empty = true
-        when (sURIMatcher.match(uri)) {
-            CODE_TOP_RATED -> {
-                val db = mOpenHelper.writableDatabase
-                val cur = db.rawQuery("SELECT COUNT(*) FROM YOURTABLE", null)
-                if (cur != null && cur.moveToFirst()) {
-                    empty = cur.getInt(0) == 0
-                }
-                cur?.close()
-            }
-        }
-        return empty
-    }
+
+
 }

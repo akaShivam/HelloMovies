@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cdImdb"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp"
+    app:cardBackgroundColor="@color/gray_shade_4"
+    app:cardCornerRadius="2dp"
+    app:cardElevation="5dp">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tv_title"
+            style="@style/IMDB_heading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Title"
+            app:layout_constraintEnd_toStartOf="@+id/gd"
+            app:layout_constraintTop_toBottomOf="@+id/omdb_rating" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/gd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.25" />
+
+        <TextView
+            android:id="@+id/omdb_title"
+            style="@style/IMDB_detail"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/gd"
+            app:layout_constraintTop_toTopOf="@+id/tv_title"
+            tools:text="Once upon a time in America - Part 1. Extra text to see how it looks on long list" />
+
+        <TextView
+            android:id="@+id/tv_year"
+            style="@style/IMDB_heading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="Year"
+            app:layout_constraintBottom_toBottomOf="@+id/omdb_year"
+            app:layout_constraintEnd_toStartOf="@+id/gd" />
+
+        <TextView
+            android:id="@+id/omdb_year"
+            style="@style/IMDB_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="@+id/gd"
+            app:layout_constraintTop_toBottomOf="@+id/omdb_title"
+            tools:text="1984" />
+
+        <TextView
+            android:id="@+id/textView7"
+            style="@style/IMDB_heading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="Rated"
+            app:layout_constraintBottom_toBottomOf="@+id/omdb_rated"
+            app:layout_constraintEnd_toStartOf="@+id/gd" />
+
+        <TextView
+            android:id="@+id/omdb_rated"
+            style="@style/IMDB_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="@+id/gd"
+            app:layout_constraintTop_toBottomOf="@+id/omdb_year"
+            tools:text="U" />
+
+        <TextView
+            android:id="@+id/textView11"
+            style="@style/IMDB_heading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="Runtime"
+            app:layout_constraintBottom_toBottomOf="@+id/omdb_runtime"
+            app:layout_constraintEnd_toStartOf="@+id/gd" />
+
+        <TextView
+            android:id="@+id/omdb_runtime"
+            style="@style/IMDB_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="@+id/gd"
+            app:layout_constraintTop_toBottomOf="@+id/omdb_rated"
+            tools:text="229min" />
+
+        <TextView
+            android:id="@+id/textView13"
+            style="@style/IMDB_heading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="Genre"
+            app:layout_constraintBottom_toBottomOf="@+id/omdb_genre"
+            app:layout_constraintEnd_toStartOf="@+id/gd" />
+
+        <TextView
+            android:id="@+id/omdb_genre"
+            style="@style/IMDB_detail"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/gd"
+            app:layout_constraintTop_toBottomOf="@+id/omdb_runtime"
+            tools:text="Adult, Drama" />
+
+        <TextView
+            android:id="@+id/textView15"
+            style="@style/IMDB_heading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="Director"
+            app:layout_constraintBottom_toBottomOf="@+id/omdb_director"
+            app:layout_constraintEnd_toStartOf="@+id/gd" />
+
+        <TextView
+            android:id="@+id/omdb_director"
+            style="@style/IMDB_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="24dp"
+            app:layout_constraintStart_toStartOf="@+id/gd"
+            app:layout_constraintTop_toBottomOf="@+id/omdb_genre"
+            tools:text="Sergio Leone" />
+
+        <TextView
+            android:id="@+id/textView17"
+            style="@style/IMDB_heading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="Writer"
+            app:layout_constraintEnd_toStartOf="@+id/gd"
+            app:layout_constraintTop_toTopOf="@+id/omdb_writer" />
+
+        <TextView
+            android:id="@+id/omdb_writer"
+            style="@style/IMDB_detail"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/gd"
+            app:layout_constraintTop_toBottomOf="@+id/omdb_director"
+            tools:text="afjh ald" />
+
+        <TextView
+            android:id="@+id/tv2"
+            style="@style/IMDB_heading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="Awards"
+            app:layout_constraintEnd_toStartOf="@+id/gd"
+            app:layout_constraintTop_toTopOf="@+id/omdb_awards" />
+
+        <TextView
+            android:id="@+id/omdb_awards"
+            style="@style/IMDB_detail"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/gd"
+            app:layout_constraintTop_toBottomOf="@+id/omdb_writer"
+            tools:text="26 a as s a sda f @sample/tools:date/day_of_week" />
+
+        <TextView
+            android:id="@+id/textView20"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="sans-serif-light"
+            android:text="IMDB Details"
+            android:textColor="@color/gray_shade_8"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView21"
+            style="@style/IMDB_heading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="Rating"
+            app:layout_constraintBottom_toBottomOf="@+id/omdb_rating"
+            app:layout_constraintEnd_toStartOf="@+id/gd" />
+
+        <TextView
+            android:id="@+id/omdb_rating"
+            style="@style/IMDB_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="24dp"
+            android:text="9.8"
+            app:layout_constraintStart_toStartOf="@+id/gd"
+            app:layout_constraintTop_toBottomOf="@+id/textView20" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</android.support.v7.widget.CardView>

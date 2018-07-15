@@ -1,25 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardElevation="@dimen/cardview_default_elevation"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="290dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_margin="5dp"
     app:cardCornerRadius="@dimen/cardview_default_radius"
-    android:layout_margin="2dp">
-    <LinearLayout
+    app:cardElevation="@dimen/cardview_default_elevation">
+
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/review_author"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+            android:layout_marginTop="4dp"
+            android:background="@color/gray_shade_1"
+            android:fontFamily="sans-serif-condensed"
+            android:textAlignment="textEnd"
+            android:textColor="@color/primary_text"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/review_text"
+            tools:text="author" />
 
         <TextView
             android:id="@+id/review_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:maxLines="3" />
-        <TextView
-            android:id="@+id/review_author"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"/>
-    </LinearLayout>
+            android:layout_width="0dp"
+            android:layout_height="132dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:backgroundTint="@android:color/background_light"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="7"
+            android:textColor="@color/secondary_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="This is a test message to see if it is working on the basis of what i want it to\n\nit is a good review\nALso it is good\nIt is the final line\nWhich is to be added" />
+    </android.support.constraint.ConstraintLayout>
 </android.support.v7.widget.CardView>

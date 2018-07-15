@@ -3,9 +3,9 @@ package com.rahul.mymovies.networkutils
 import android.content.ContentValues
 import android.util.Log
 import com.rahul.mymovies.data.MoviesContract
-import com.rahul.mymovies.models.MovieCast
-import com.rahul.mymovies.models.MovieReview
-import com.rahul.mymovies.models.MovieVideo
+import com.rahul.mymovies.controller.moviedetailactivity.MovieCast
+import com.rahul.mymovies.controller.moviedetailactivity.MovieReview
+import com.rahul.mymovies.controller.moviedetailactivity.MovieVideo
 import org.json.JSONException
 import org.json.JSONObject
 
@@ -128,7 +128,7 @@ object JSONParserUtils {
                 reviewList.add(MovieReview(author, content, url))
             }
         }catch(e: Exception){
-            Log.v("Error", "Movie video error")
+            Log.v("Error", "Movie reviews error")
         }
         return reviewList
     }
@@ -153,7 +153,7 @@ object JSONParserUtils {
                 castList.add(MovieCast(character, name, posterPath))
             }
         }catch(e: Exception){
-            Log.v("Error", "Movie video error")
+            Log.v("Error", "Movie credits error")
         }
         return castList
     }

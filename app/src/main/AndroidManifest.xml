@@ -11,29 +11,34 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name=".controller.MainActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:launchMode="singleTop">
 
+        <activity android:name=".SplashActivity"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".controller.HomeActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+            android:name=".controller.moviedetailactivity.MovieDetailActivity"
+            android:label="@string/title_activity_movie_detail"
+            android:screenOrientation="portrait"
+            android:theme="@style/MovieDetailTheme" />
 
         <provider
             android:name=".data.MoviesProvider"
             android:authorities="com.rahul.mymovies"
             android:exported="false" />
 
-        <activity
-            android:name=".controller.MovieDetailActivity"
-            android:label="@string/title_activity_movie_detail"
-            android:theme="@style/MovieDetailTheme">
-
-        </activity>
     </application>
 
 </manifest>

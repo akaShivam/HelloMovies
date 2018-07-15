@@ -1,10 +1,10 @@
 package com.rahul.mymovies.loaders
 
 import android.content.Context
-import android.support.v4.app.LoaderManager
 import android.database.Cursor
 import android.os.AsyncTask
 import android.os.Bundle
+import android.support.v4.app.LoaderManager
 import android.support.v4.content.CursorLoader
 import android.support.v4.content.Loader
 import android.util.Log
@@ -13,7 +13,7 @@ import com.rahul.mymovies.adapter.DatabaseListAdapter
 import com.rahul.mymovies.data.MoviesContract
 import com.rahul.mymovies.networkutils.NetworkCallHelper
 
-class TopRatedLoader(val context: Context, val mode: Int): LoaderManager.LoaderCallbacks<Cursor>{
+class MostPopularLoader(val context: Context, val mode: Int): LoaderManager.LoaderCallbacks<Cursor>{
 
     var page = 1
     private var isFirst = false
@@ -35,16 +35,16 @@ class TopRatedLoader(val context: Context, val mode: Int): LoaderManager.LoaderC
         const val MODE_LIST = 1
         const val MODE_GRID = 2
 
-        const val ID_TOP_RATED_LOADER = 1201
+        const val ID_MOST_POPULAR_LOADER = 1202
         var statusOfRequest = 0
-        class UpdateTopRatedDatabaseTask(private val topRatedLoader: TopRatedLoader) : AsyncTask<Int, Unit, Unit>() {
+        class UpdateTopRatedDatabaseTask(private val topRatedLoader: MostPopularLoader) : AsyncTask<Int, Unit, Unit>() {
             override fun doInBackground(vararg params: Int?) {
-                statusOfRequest = NetworkCallHelper.addTopMoviesFromJson(topRatedLoader.context, topRatedLoader.page)
+                statusOfRequest = NetworkCallHelper.addMostPopularFromJson(topRatedLoader.context!!, topRatedLoader.page)
             }
 
             override fun onPostExecute(result: Unit?) {
                 if(statusOfRequest == 1){
-                    topRatedLoader.onCreateLoader(ID_TOP_RATED_LOADER, null)
+                    topRatedLoader.onCreateLoader(ID_MOST_POPULAR_LOADER, null)
                 }else{
 
                     if(topRatedLoader.page != 1){
@@ -61,17 +61,17 @@ class TopRatedLoader(val context: Context, val mode: Int): LoaderManager.LoaderC
 
     override fun onCreateLoader(id: Int, args: Bundle?): Loader<Cursor> {
         when(id){
-            ID_TOP_RATED_LOADER -> {
+            ID_MOST_POPULAR_LOADER -> {
                 val maxPage = page.toString()
 
-                val topRatedQueryUri = MoviesContract.TopRatedEntry.CONTENT_URI
+                val mostPopularQueryUri = MoviesContract.MostPopularEntry.CONTENT_URI
                 Log.v("Max PAge", maxPage)
-                return CursorLoader(context!!,
-                        topRatedQueryUri,
-                        MoviesContract.TopRatedEntry.getColumns(),
-                        "${MoviesContract.TopRatedEntry.COLUMN_ORIGINAL_LANGUAGE} = ? AND ${MoviesContract.TopRatedEntry.COLUMN_PAGE_NO} <= ? ",
+                return CursorLoader(context,
+                        mostPopularQueryUri,
+                        MoviesContract.MostPopularEntry.getColumns(),
+                        "${MoviesContract.MostPopularEntry.COLUMN_ORIGINAL_LANGUAGE} = ? AND ${MoviesContract.MostPopularEntry.COLUMN_PAGE_NO} <= ? ",
                         arrayOf("en", maxPage),
-                        MoviesContract.TopRatedEntry.COLUMN_PAGE_NO + " ASC")
+                        MoviesContract.MostPopularEntry.COLUMN_PAGE_NO + " ASC")
             }
             else->throw RuntimeException("loader not implemented $id")
         }
@@ -87,7 +87,7 @@ class TopRatedLoader(val context: Context, val mode: Int): LoaderManager.LoaderC
             UpdateTopRatedDatabaseTask(this).execute(1)
         }
         else{
-            if(mode == MostPopularLoader.MODE_LIST){
+            if(mode == MODE_LIST){
                 Log.v("Swap Check", "${mDatabaseListAdapter!!.itemCount} and ${data?.count}")
                 if(mDatabaseListAdapter!!.itemCount == data?.count && isFirst){
                     UpdateTopRatedDatabaseTask(this).execute()
@@ -119,7 +119,7 @@ class TopRatedLoader(val context: Context, val mode: Int): LoaderManager.LoaderC
     }
 
     override fun onLoaderReset(loader: Loader<Cursor>) {
-        if(mode == MostPopularLoader.MODE_LIST){
+        if(mode == MODE_LIST){
             mDatabaseListAdapter!!.swapCursor(null)
             mDatabaseListAdapter!!.notifyDataSetChanged()
         }
@@ -128,6 +128,7 @@ class TopRatedLoader(val context: Context, val mode: Int): LoaderManager.LoaderC
             mDatabaseGridAdapter!!.notifyDataSetChanged()
         }
     }
+
     fun updatePage(){
         page = page + 1
         isFirst = true

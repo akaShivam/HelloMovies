@@ -1,4 +1,4 @@
-package com.rahul.mymovies.adapter
+package com.rahul.mymovies.controller.moviedetailactivity
 
 import android.content.Context
 import android.content.Intent
@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.rahul.mymovies.R
-import com.rahul.mymovies.models.MovieReview
 
 
 class MovieReviewAdapter(val context: Context) : RecyclerView.Adapter<MovieReviewAdapter.MovieReviewHolder>() {
@@ -39,9 +38,9 @@ class MovieReviewAdapter(val context: Context) : RecyclerView.Adapter<MovieRevie
         private val author = itemView.findViewById<TextView>(R.id.review_author)
 
         fun bind(movieReview: MovieReview){
-
+                val authorString = "- by ${movieReview.author}  "
                 content.text = movieReview.content
-                author.text = movieReview.author
+                author.text = authorString
                 itemView.setOnClickListener {
                     val intent = Intent(Intent.ACTION_VIEW,
                             Uri.parse(movieReview.url))

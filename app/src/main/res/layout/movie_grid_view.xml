@@ -1,27 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardElevation="5dp"
-    android:layout_marginTop = "3dp"
-    android:layout_marginStart="8dp"
-    android:layout_marginBottom="8dp">
+    android:layout_margin="5dp"
+    app:cardCornerRadius="5dp"
+    app:cardElevation="5dp">
 
     <android.support.constraint.ConstraintLayout
+
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/moviePosterImage"
-            android:layout_width="@dimen/card_poster_width"
-            android:layout_height="@dimen/card_poster_height"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:adjustViewBounds="true"
+            android:transitionName="@string/poster_image_transition"
+            app:layout_constraintDimensionRatio="w,3:2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@color/colorPrimary"
-            android:scaleType="fitXY"
-            android:transitionName="@string/poster_image_transition"/>
+            app:srcCompat="@mipmap/ic_launcher" />
 
         <View
             android:id="@+id/view"
@@ -33,15 +35,6 @@
             app:layout_constraintStart_toStartOf="@+id/moviePosterImage"
             app:layout_constraintTop_toTopOf="@+id/moviePosterImage" />
 
-        <View
-            android:id="@+id/view2"
-            android:layout_width="0dp"
-            android:layout_height="20dp"
-            android:background="#ee000000"
-            app:layout_constraintEnd_toEndOf="@+id/view"
-            app:layout_constraintStart_toStartOf="@+id/view"
-            app:layout_constraintTop_toBottomOf="@+id/view" />
-
         <TextView
             android:id="@+id/movieTitleTextView"
             android:layout_width="0dp"
@@ -50,14 +43,13 @@
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:maxLines="3"
-            android:text="hi"
+            android:text="Loading"
             android:textColor="@android:color/white"
             android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="@+id/view2"
+            app:layout_constraintBottom_toBottomOf="@+id/view"
             app:layout_constraintEnd_toEndOf="@+id/moviePosterImage"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/moviePosterImage" />
 
     </android.support.constraint.ConstraintLayout>
-
 </android.support.v7.widget.CardView>

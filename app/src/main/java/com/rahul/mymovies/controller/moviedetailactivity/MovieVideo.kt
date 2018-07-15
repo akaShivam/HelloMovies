@@ -1,4 +1,4 @@
-package com.rahul.mymovies.models
+package com.rahul.mymovies.controller.moviedetailactivity
 
 import android.util.Log
 
