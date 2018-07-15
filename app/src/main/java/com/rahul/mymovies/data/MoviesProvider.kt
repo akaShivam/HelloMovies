@@ -7,7 +7,7 @@ import android.database.Cursor
 import android.net.Uri
 
 class MoviesProvider : ContentProvider() {
-    lateinit var mOpenHelper: MoviesDbHelper
+    private lateinit var mOpenHelper: MoviesDbHelper
 
     private val CODE_TOP_RATED = 100
     private val CODE_MOST_POPULAR = 200
@@ -85,8 +85,8 @@ class MoviesProvider : ContentProvider() {
 
                 try{
                     for(value: ContentValues in values!!){
-                        val _id = db.insert(MoviesContract.TopRatedEntry.TABLE_NAME, null, value)
-                        if(_id != -1L){
+                        val id = db.insert(MoviesContract.TopRatedEntry.TABLE_NAME, null, value)
+                        if(id != -1L){
                             rowsInserted++
                         }
                     }
@@ -108,8 +108,8 @@ class MoviesProvider : ContentProvider() {
 
                 try{
                     for(value: ContentValues in values!!){
-                        val _id = db.insert(MoviesContract.MostPopularEntry.TABLE_NAME, null, value)
-                        if(_id != -1L){
+                        val id = db.insert(MoviesContract.MostPopularEntry.TABLE_NAME, null, value)
+                        if(id != -1L){
                             rowsInserted++
                         }
                     }
@@ -130,8 +130,8 @@ class MoviesProvider : ContentProvider() {
 
                 try{
                     for(value: ContentValues in values!!){
-                        val _id = db.insert(MoviesContract.NowPlayingEntry.TABLE_NAME, null, value)
-                        if(_id != -1L){
+                        val id = db.insert(MoviesContract.NowPlayingEntry.TABLE_NAME, null, value)
+                        if(id != -1L){
                             rowsInserted++
                         }
                     }

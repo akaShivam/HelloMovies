@@ -8,9 +8,11 @@ import android.support.v4.app.LoaderManager
 import android.support.v4.content.CursorLoader
 import android.support.v4.content.Loader
 import android.util.Log
+import com.rahul.mymovies.Injection
 import com.rahul.mymovies.adapter.NowPlayingAdapter
 import com.rahul.mymovies.data.MoviesContract
 import com.rahul.mymovies.loaders.MostPopularLoader.Companion.ID_MOST_POPULAR_LOADER
+import com.rahul.mymovies.loaders.NowPlayingLoader.Companion.ID_NOW_PLAYING_LOADER
 import com.rahul.mymovies.networkutils.NetworkCallHelper
 
 class NowPlayingLoader(val context: Context?, private val mostPopularAdapter: NowPlayingAdapter) : LoaderManager.LoaderCallbacks<Cursor>{
@@ -32,14 +34,10 @@ class NowPlayingLoader(val context: Context?, private val mostPopularAdapter: No
                 if(statusOfRequest == 1){
                     topRatedLoader.onCreateLoader(ID_NOW_PLAYING_LOADER, null)
                 }else{
-
-                    if(topRatedLoader.page != 1){
-                        topRatedLoader.page = topRatedLoader.page - 1
-                    }
+                    topRatedLoader.mostPopularAdapter.notifyDataSetChanged()
                     topRatedLoader.isFirst = true
                     topRatedLoader.isLoading = false
                 }
-                super.onPostExecute(result)
             }
         }
     }
@@ -50,14 +48,26 @@ class NowPlayingLoader(val context: Context?, private val mostPopularAdapter: No
             ID_NOW_PLAYING_LOADER -> {
                 val maxPage = page.toString()
 
+                var startQuery = "(${MoviesContract.COLUMN_ORIGINAL_LANGUAGE} = 'en'"
+                //Make selection query handle extra cases
+                if (Injection.isBollywoodEnabled) {
+                    startQuery = "$startQuery OR ${MoviesContract.COLUMN_ORIGINAL_LANGUAGE} = 'hi' "
+                }
+
+                if(Injection.isAnimeEnabled) {
+                    startQuery = "$startQuery OR ${MoviesContract.COLUMN_ORIGINAL_LANGUAGE} = 'ja' "
+                }
+
+                startQuery = "$startQuery)"
+
                 val mostPopularQueryUri = MoviesContract.NowPlayingEntry.CONTENT_URI
                 Log.v("Max PAge", maxPage)
                 return CursorLoader(context!!,
                         mostPopularQueryUri,
-                        MoviesContract.NowPlayingEntry.getColumns(),
-                        "${MoviesContract.NowPlayingEntry.COLUMN_ORIGINAL_LANGUAGE} = ? AND ${MoviesContract.NowPlayingEntry.COLUMN_PAGE_NO} <= ? ",
-                        arrayOf("en", maxPage),
-                        MoviesContract.NowPlayingEntry.COLUMN_PAGE_NO + " ASC")
+                        MoviesContract.getNormalColumns(),
+                        startQuery,
+                        null,
+                        MoviesContract.COLUMN_PAGE_NO + " ASC")
             }
             else->throw RuntimeException("loader not implemented $id")
         }

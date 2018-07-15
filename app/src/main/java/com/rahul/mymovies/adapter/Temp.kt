@@ -6,7 +6,6 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
@@ -15,17 +14,15 @@ import com.rahul.mymovies.data.MoviesContract
 import com.rahul.mymovies.models.Movie
 
 /*
-    Class that uses the cursor to generate the large list of now playing items
+    Class that uses a cursor to generate the layout to be displayed in the grid
  */
-class NowPlayingAdapter(val context: Context, private val itemClick: (Movie) -> Unit) : RecyclerView.Adapter<NowPlayingAdapter.MovieListViewHolder>() {
-    private var lastLoadedPosition = -1
+class Temp(val context: Context, private val itemClick: (Movie) -> Unit) : RecyclerView.Adapter<Temp.MovieGridViewHolder>() {
+
     private var mCursor: Cursor? = null
 
-
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieListViewHolder {
-        val itemView = LayoutInflater.from(context).inflate(R.layout.movie_list_large, parent, false)
-        return MovieListViewHolder(itemView, itemClick)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieGridViewHolder {
+        val itemView = LayoutInflater.from(context).inflate(R.layout.movie_grid_view, parent, false)
+        return MovieGridViewHolder(itemView, itemClick)
     }
 
     override fun getItemCount(): Int {
@@ -35,33 +32,21 @@ class NowPlayingAdapter(val context: Context, private val itemClick: (Movie) -> 
         return 0
     }
 
-    override fun onBindViewHolder(holder: MovieListViewHolder, position: Int) {
-        if (mCursor != null && !mCursor!!.isClosed && position< itemCount) {
+    override fun onBindViewHolder(holder: MovieGridViewHolder, position: Int) {
+        if (mCursor != null && !mCursor!!.isClosed && position < itemCount) {
             mCursor!!.moveToPosition(position)
             holder.bind(context, mCursor)
-            startAddAnimation(holder.itemView, position)
         }
     }
 
+    inner class MovieGridViewHolder(itemView: View, private val itemClick: (Movie) -> Unit) : RecyclerView.ViewHolder(itemView) {
 
-    override fun onViewDetachedFromWindow(holder: MovieListViewHolder) {
-        holder.clearAnimation()
-    }
-
-    private fun startAddAnimation(viewToAnimate: View, position: Int) {
-        if (position > lastLoadedPosition) {
-            val animation = AnimationUtils.loadAnimation(context, R.anim.slide_from_right)
-            viewToAnimate.startAnimation(animation)
-            lastLoadedPosition = position
-        }
-    }
-
-
-    inner class MovieListViewHolder(itemView: View, private val itemClick: (Movie) -> Unit) : RecyclerView.ViewHolder(itemView) {
         private val titleView = itemView.findViewById<TextView>(R.id.movieTitleTextView)
         private val posterView = itemView.findViewById<ImageView>(R.id.moviePosterImage)
 
+
         fun bind(context: Context, mCursor: Cursor?) {
+
             val movieId = mCursor!!.getInt(MoviesContract.INDEX_COLUMN_MOVIE_ID_KEY)
             val title = mCursor.getString(MoviesContract.INDEX_COLUMN_TITLE)
             val overview = mCursor.getString(MoviesContract.INDEX_COLUMN_OVERVIEW)
@@ -70,21 +55,27 @@ class NowPlayingAdapter(val context: Context, private val itemClick: (Movie) -> 
             val imagePath = mCursor.getString(MoviesContract.INDEX_COLUMN_POSTER_PATH)
             val backdropPath = mCursor.getString(MoviesContract.INDEX_COLUMN_BACKDROP_PATH)
 
-            val movie = Movie(movieId, title, overview,imagePath, backdropPath, releaseDate, averageVote)
+            val movie = Movie(movieId, title, overview, imagePath, backdropPath, releaseDate, averageVote)
             titleView.text = movie.title
             Glide.with(context).load(movie.imagePath)
                     .into(posterView)
 
             itemView.setOnClickListener { itemClick(movie) }
         }
-
-        fun clearAnimation() {
-            itemView.clearAnimation()
-        }
     }
 
     fun swapCursor(cursor: Cursor?) {
-        mCursor = cursor
-        notifyDataSetChanged()
+        if(cursor == null || mCursor == null){
+            mCursor = cursor
+            notifyDataSetChanged()
+        }
+        else if(cursor.count > itemCount){
+            val startIndex = itemCount
+            val endIndex =  cursor.count - 1
+            mCursor = cursor
+            notifyItemRangeInserted(startIndex, endIndex)
+        }
     }
+
+
 }

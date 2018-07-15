@@ -15,6 +15,7 @@ import android.view.ViewGroup
 import com.rahul.mymovies.R
 import com.rahul.mymovies.adapter.DatabaseListAdapter
 import com.rahul.mymovies.adapter.NowPlayingAdapter
+import com.rahul.mymovies.controller.EmptyRecyclerViewObserver
 import com.rahul.mymovies.controller.ListEndlessScrollListener
 import com.rahul.mymovies.controller.OnFragmentInteractionListener
 import com.rahul.mymovies.loaders.MostPopularLoader
@@ -87,14 +88,14 @@ class MainActivityFragment : Fragment(){
         nowPlayingRecyclerView.layoutManager = layoutManager
         nowPlayingRecyclerView.itemAnimator = DefaultItemAnimator()
 
-        nowPlayingAdapter = NowPlayingAdapter(mContext!!){movie, itemView->
+        nowPlayingAdapter = NowPlayingAdapter(mContext!!){movie->
             val intentDetailActivity = Intent(mContext, MovieDetailActivity::class.java)
 
             intentDetailActivity.putExtra("movie", movie)
             val optionsCompat = ActivityOptions.makeSceneTransitionAnimation(activity as Activity)
             startActivity(intentDetailActivity, optionsCompat.toBundle())
         }
-
+        nowPlayingAdapter.registerAdapterDataObserver(EmptyRecyclerViewObserver(nowPlayingRecyclerView, nowPlayingErrorView, nowPlayingProgressBar))
         nowPlayingRecyclerView.adapter = nowPlayingAdapter
 
         nowPlayingLoader = NowPlayingLoader(mContext, nowPlayingAdapter)
@@ -105,7 +106,7 @@ class MainActivityFragment : Fragment(){
         mostPopularRecyclerView.layoutManager = layoutManager
         mostPopularRecyclerView.itemAnimator = DefaultItemAnimator()
 
-        databaseListAdapter = DatabaseListAdapter(mContext!!){ movie, _->
+        databaseListAdapter = DatabaseListAdapter(mContext!!){ movie->
             val intentDetailActivity = Intent(mContext, MovieDetailActivity::class.java)
 
             intentDetailActivity.putExtra("movie", movie)
@@ -113,6 +114,7 @@ class MainActivityFragment : Fragment(){
             startActivity(intentDetailActivity, optionsCompat.toBundle())
         }
 
+        databaseListAdapter.registerAdapterDataObserver(EmptyRecyclerViewObserver(mostPopularRecyclerView, mostPopularErrorView, mostPopularProgressBar))
         mostPopularRecyclerView.adapter = databaseListAdapter
 
         popularLoader = MostPopularLoader(mContext!!, databaseListAdapter, MostPopularLoader.MODE_LIST)
@@ -125,7 +127,7 @@ class MainActivityFragment : Fragment(){
         topRatedRecyclerView.layoutManager = layoutManager
         topRatedRecyclerView.itemAnimator = DefaultItemAnimator()
 
-        topRatedAdapter = DatabaseListAdapter(mContext!!){movie, itemView->
+        topRatedAdapter = DatabaseListAdapter(mContext!!){movie->
             val intentDetailActivity = Intent(mContext, MovieDetailActivity::class.java)
 
             intentDetailActivity.putExtra("movie", movie)
@@ -134,20 +136,11 @@ class MainActivityFragment : Fragment(){
             startActivity(intentDetailActivity, optionsCompat.toBundle())
         }
 
+        topRatedAdapter.registerAdapterDataObserver(EmptyRecyclerViewObserver(topRatedRecyclerView, topRatedErrorView, topRatedProgressBar))
         topRatedRecyclerView.adapter = topRatedAdapter
 
         topLoader = TopRatedLoader(mContext!!, topRatedAdapter, TopRatedLoader.MODE_LIST)
         topRatedRecyclerView.addOnScrollListener(object : ListEndlessScrollListener(TopRatedLoader.ID_TOP_RATED_LOADER, loaderManager, topLoader, layoutManager){})
     }
 
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        Log.v("Fragment", "View destroyed")
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.v("destroyed", "Fragment is destroyed")
-    }
 }

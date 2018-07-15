@@ -66,15 +66,15 @@ object JSONParserUtils {
                 releseDate = movieObject.getString(TMDB_RELEASE_DATE)
 
                 val contentValues = ContentValues()
-                contentValues.put(MoviesContract.TopRatedEntry.COLUMN_MOVIE_ID_KEY, movieID)
-                contentValues.put(MoviesContract.TopRatedEntry.COLUMN_TITLE, title)
-                contentValues.put(MoviesContract.TopRatedEntry.COLUMN_OVERVIEW, overview)
-                contentValues.put(MoviesContract.TopRatedEntry.COLUMN_POSTER_PATH, imageBasePath + imagePath)
-                contentValues.put(MoviesContract.TopRatedEntry.COLUMN_BACKDROP_PATH, imageBasePath + backdropPath)
-                contentValues.put(MoviesContract.TopRatedEntry.COLUMN_ORIGINAL_LANGUAGE, originalLanguage)
-                contentValues.put(MoviesContract.TopRatedEntry.COLUMN_AVERAGE_VOTE, voteAverage)
-                contentValues.put(MoviesContract.TopRatedEntry.COLUMN_RELEASE_DATE, releseDate)
-                contentValues.put(MoviesContract.TopRatedEntry.COLUMN_PAGE_NO, pageNo)
+                contentValues.put(MoviesContract.COLUMN_MOVIE_ID_KEY, movieID)
+                contentValues.put(MoviesContract.COLUMN_TITLE, title)
+                contentValues.put(MoviesContract.COLUMN_OVERVIEW, overview)
+                contentValues.put(MoviesContract.COLUMN_POSTER_PATH, imageBasePath + imagePath)
+                contentValues.put(MoviesContract.COLUMN_BACKDROP_PATH, imageBasePath + backdropPath)
+                contentValues.put(MoviesContract.COLUMN_ORIGINAL_LANGUAGE, originalLanguage)
+                contentValues.put(MoviesContract.COLUMN_AVERAGE_VOTE, voteAverage)
+                contentValues.put(MoviesContract.COLUMN_RELEASE_DATE, releseDate)
+                contentValues.put(MoviesContract.COLUMN_PAGE_NO, pageNo)
 
                 parsedTopMovies[i] = contentValues
             }

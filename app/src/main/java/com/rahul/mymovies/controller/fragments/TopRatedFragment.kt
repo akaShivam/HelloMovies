@@ -14,6 +14,7 @@ import android.view.ViewGroup
 
 import com.rahul.mymovies.R
 import com.rahul.mymovies.adapter.DatabaseGridAdapter
+import com.rahul.mymovies.controller.EmptyRecyclerViewObserver
 import com.rahul.mymovies.controller.GridEndlessScrollListener
 import com.rahul.mymovies.controller.OnFragmentInteractionListener
 import com.rahul.mymovies.loaders.TopRatedLoader
@@ -59,13 +60,15 @@ class TopRatedFragment : Fragment() {
         topRatedGridView.layoutManager = layoutManager
         topRatedGridView.itemAnimator = DefaultItemAnimator()
 
-        databaseListAdapter = DatabaseGridAdapter(mContext!!){ movie, _->
+        databaseListAdapter = DatabaseGridAdapter(mContext!!){ movie->
             val intentDetailActivity = Intent(mContext, MovieDetailActivity::class.java)
 
             intentDetailActivity.putExtra("movie", movie)
             val optionsCompat = ActivityOptions.makeSceneTransitionAnimation(activity as Activity)
             startActivity(intentDetailActivity, optionsCompat.toBundle())
         }
+
+        databaseListAdapter.registerAdapterDataObserver(EmptyRecyclerViewObserver(topRatedGridView, cardError, progressBar))
 
         topRatedGridView.adapter = databaseListAdapter
         topRatedLoader = TopRatedLoader(mContext!!, databaseListAdapter, TopRatedLoader.MODE_GRID)
@@ -86,17 +89,5 @@ class TopRatedFragment : Fragment() {
         super.onDetach()
         listener = null
     }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     *
-     *
-     * See the Android Training lesson [Communicating with Other Fragments]
-     * (http://developer.android.com/training/basics/fragments/communicating.html)
-     * for more information.
-     */
 
 }

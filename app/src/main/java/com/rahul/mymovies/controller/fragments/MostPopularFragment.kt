@@ -60,7 +60,7 @@ class MostPopularFragment : Fragment() {
         mostPopularGridView.layoutManager = layoutManager
         mostPopularGridView.itemAnimator = DefaultItemAnimator()
 
-        databaseListAdapter = DatabaseGridAdapter(mContext!!){ movie, _->
+        databaseListAdapter = DatabaseGridAdapter(mContext!!){ movie->
             val intentDetailActivity = Intent(mContext, MovieDetailActivity::class.java)
 
             intentDetailActivity.putExtra("movie", movie)
@@ -68,6 +68,7 @@ class MostPopularFragment : Fragment() {
             startActivity(intentDetailActivity, optionsCompat.toBundle())
         }
 
+        mostPopularGridView.hasFixedSize()
         mostPopularGridView.adapter = databaseListAdapter
         popularLoader = MostPopularLoader(mContext!!, databaseListAdapter, MostPopularLoader.MODE_GRID)
         mostPopularGridView.addOnScrollListener(object : GridEndlessScrollListener(MostPopularLoader.ID_MOST_POPULAR_LOADER, loaderManager, popularLoader, layoutManager){})

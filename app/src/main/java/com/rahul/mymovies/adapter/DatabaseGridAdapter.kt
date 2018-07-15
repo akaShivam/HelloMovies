@@ -14,63 +14,52 @@ import com.rahul.mymovies.data.MoviesContract
 import com.rahul.mymovies.models.Movie
 
 
-class DatabaseGridAdapter(val context: Context, private val itemClick: (Movie, View) -> Unit) : RecyclerView.Adapter<DatabaseGridAdapter.MovieListViewHolder>() {
-    private var mCursor: Cursor? = null
+/*
+    Class that uses a cursor to generate the layout to be displayed in the grid
+ */
+class DatabaseGridAdapter(val context: Context, private val itemClick: (Movie) -> Unit) : RecyclerView.Adapter<DatabaseGridAdapter.MovieGridViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieListViewHolder {
+    private var mGridList =  ArrayList<Movie>()
 
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieGridViewHolder {
         val itemView = LayoutInflater.from(context).inflate(R.layout.movie_grid_view, parent, false)
-        return MovieListViewHolder(itemView, itemClick)
+        return MovieGridViewHolder(itemView, itemClick)
     }
 
     override fun getItemCount(): Int {
-        if (mCursor != null) {
-            return mCursor!!.count
-        }
-        return 0
+        return mGridList.size
     }
 
-    override fun onBindViewHolder(holder: MovieListViewHolder, position: Int) {
-        if (mCursor != null && !mCursor!!.isClosed && position < itemCount) {
-            mCursor!!.moveToPosition(position)
-            holder.bind(context, mCursor)
+    override fun onBindViewHolder(holder: MovieGridViewHolder, position: Int) {
+        if (position < itemCount) {
+            holder.bind(context, mGridList[position])
         }
     }
-    inner class MovieListViewHolder(itemView: View, private val itemClick: (Movie, View) -> Unit) : RecyclerView.ViewHolder(itemView) {
+
+    inner class MovieGridViewHolder(itemView: View, private val itemClick: (Movie) -> Unit) : RecyclerView.ViewHolder(itemView) {
+
         private val titleView = itemView.findViewById<TextView>(R.id.movieTitleTextView)
         private val posterView = itemView.findViewById<ImageView>(R.id.moviePosterImage)
 
 
-        fun bind(context: Context, mCursor: Cursor?) {
-            val movieId = mCursor!!.getInt(MoviesContract.TopRatedEntry.INDEX_COLUMN_MOVIE_ID_KEY)
-            val title = mCursor.getString(MoviesContract.TopRatedEntry.INDEX_COLUMN_TITLE)
-            val overview = mCursor.getString(MoviesContract.TopRatedEntry.INDEX_COLUMN_OVERVIEW)
-            val averageVote = mCursor.getDouble(MoviesContract.TopRatedEntry.INDEX_COLUMN_AVERAGE_VOTE)
-            val releaseDate = mCursor.getString(MoviesContract.TopRatedEntry.INDEX_COLUMN_RELEASE_DATE)
-            val imagePath = mCursor.getString(MoviesContract.TopRatedEntry.INDEX_COLUMN_POSTER_PATH)
-            val backdropPath = mCursor.getString(MoviesContract.TopRatedEntry.INDEX_COLUMN_BACKDROP_PATH)
-
-            val movie = Movie(movieId, title, overview, imagePath, backdropPath, releaseDate, averageVote)
+        fun bind(context: Context, movie: Movie) {
             titleView.text = movie.title
             Glide.with(context).load(movie.imagePath)
                     .into(posterView)
 
-            itemView.setOnClickListener { itemClick(movie, itemView) }
+            itemView.setOnClickListener { itemClick(movie) }
         }
     }
 
-    fun swapCursor(cursor: Cursor?) {
-        if(cursor == null || mCursor == null){
-            mCursor = cursor
-            notifyDataSetChanged()
-        }else{
-            mCursor = cursor
-            val startIndex = mCursor!!.count
-            val endIndex = startIndex + cursor.count - 1
-            notifyItemRangeInserted(startIndex, endIndex)
-        }
+    fun addList(list: ArrayList<Movie>){
+        val startIndex = itemCount
+        mGridList.addAll(list)
+        val endIndex = itemCount
+        notifyItemRangeInserted(startIndex, endIndex-1)
+    }
 
-
-
+    fun clearList(){
+        mGridList.clear()
+        notifyDataSetChanged()
     }
 }

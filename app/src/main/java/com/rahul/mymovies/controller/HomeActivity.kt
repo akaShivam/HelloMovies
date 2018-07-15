@@ -27,8 +27,6 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setContentView(R.layout.activity_home)
         setSupportActionBar(toolbar)
 
-
-
         fragmentClass = MainActivityFragment::class.java
         try{
             fragment = fragmentClass!!.newInstance() as Fragment

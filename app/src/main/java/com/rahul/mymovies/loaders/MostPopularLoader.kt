@@ -8,12 +8,14 @@ import android.support.v4.app.LoaderManager
 import android.support.v4.content.CursorLoader
 import android.support.v4.content.Loader
 import android.util.Log
+import com.rahul.mymovies.Injection
 import com.rahul.mymovies.adapter.DatabaseGridAdapter
 import com.rahul.mymovies.adapter.DatabaseListAdapter
 import com.rahul.mymovies.data.MoviesContract
+import com.rahul.mymovies.models.Movie
 import com.rahul.mymovies.networkutils.NetworkCallHelper
 
-class MostPopularLoader(val context: Context, val mode: Int): LoaderManager.LoaderCallbacks<Cursor>{
+class MostPopularLoader(val context: Context, private val mode: Int) : LoaderManager.LoaderCallbacks<Cursor> {
 
     var page = 1
     private var isFirst = false
@@ -22,11 +24,11 @@ class MostPopularLoader(val context: Context, val mode: Int): LoaderManager.Load
     private var mDatabaseListAdapter: DatabaseListAdapter? = null
     private var mDatabaseGridAdapter: DatabaseGridAdapter? = null
 
-    constructor(context: Context, databaseListAdapter: DatabaseListAdapter, mode: Int): this(context, mode){
+    constructor(context: Context, databaseListAdapter: DatabaseListAdapter, mode: Int) : this(context, mode) {
         mDatabaseListAdapter = databaseListAdapter
     }
 
-    constructor(context: Context, databaseGridAdapter: DatabaseGridAdapter, mode: Int) : this(context, mode){
+    constructor(context: Context, databaseGridAdapter: DatabaseGridAdapter, mode: Int) : this(context, mode) {
         mDatabaseGridAdapter = databaseGridAdapter
     }
 
@@ -36,80 +38,134 @@ class MostPopularLoader(val context: Context, val mode: Int): LoaderManager.Load
         const val MODE_GRID = 2
 
         const val ID_MOST_POPULAR_LOADER = 1202
+
         var statusOfRequest = 0
-        class UpdateTopRatedDatabaseTask(private val topRatedLoader: MostPopularLoader) : AsyncTask<Int, Unit, Unit>() {
+
+        class UpdateMostPopularDatabaseTask(private val mostPopularLoader: MostPopularLoader) : AsyncTask<Int, Unit, Unit>() {
             override fun doInBackground(vararg params: Int?) {
-                statusOfRequest = NetworkCallHelper.addMostPopularFromJson(topRatedLoader.context!!, topRatedLoader.page)
+                statusOfRequest = NetworkCallHelper.addMostPopularFromJson(mostPopularLoader.context, mostPopularLoader.page)
             }
 
             override fun onPostExecute(result: Unit?) {
-                if(statusOfRequest == 1){
-                    topRatedLoader.onCreateLoader(ID_MOST_POPULAR_LOADER, null)
-                }else{
+                when {
+                    statusOfRequest == 1 -> mostPopularLoader.onCreateLoader(ID_MOST_POPULAR_LOADER, null)
 
-                    if(topRatedLoader.page != 1){
-                        topRatedLoader.page = topRatedLoader.page - 1
+                    mostPopularLoader.page == 1 -> {
+                        if (mostPopularLoader.mode == MostPopularLoader.MODE_GRID) {
+                            mostPopularLoader.mDatabaseGridAdapter!!.notifyDataSetChanged()
+                        } else {
+                            mostPopularLoader.mDatabaseListAdapter!!.notifyDataSetChanged()
+                        }
+                        mostPopularLoader.isFirst = true
+                        mostPopularLoader.isLoading = false
                     }
-                    topRatedLoader.isFirst = true
-                    topRatedLoader.isLoading = false
+
+                    else -> {
+                        mostPopularLoader.page = mostPopularLoader.page - 1
+                        mostPopularLoader.isFirst = true
+                        mostPopularLoader.isLoading = false
+                    }
                 }
                 super.onPostExecute(result)
+            }
+        }
+
+        class UpdateMostPopularDataSet(private val mostPopularLoader: MostPopularLoader, private val mCursor: Cursor) : AsyncTask<Unit, Unit, Unit>(){
+            val arrayList = ArrayList<Movie>()
+            override fun doInBackground(vararg params: Unit?) {
+                val count = mCursor!!.count
+                for ( i in 0 until count){
+                    mCursor.moveToPosition(i)
+                    val movieId = mCursor.getInt(MoviesContract.INDEX_COLUMN_MOVIE_ID_KEY)
+                    val title = mCursor.getString(MoviesContract.INDEX_COLUMN_TITLE)
+                    val overview = mCursor.getString(MoviesContract.INDEX_COLUMN_OVERVIEW)
+                    val averageVote = mCursor.getDouble(MoviesContract.INDEX_COLUMN_AVERAGE_VOTE)
+                    val releaseDate = mCursor.getString(MoviesContract.INDEX_COLUMN_RELEASE_DATE)
+                    val imagePath = mCursor.getString(MoviesContract.INDEX_COLUMN_POSTER_PATH)
+                    val backdropPath = mCursor.getString(MoviesContract.INDEX_COLUMN_BACKDROP_PATH)
+
+                    val movie = Movie(movieId, title, overview, imagePath, backdropPath, releaseDate, averageVote)
+                    arrayList.add(movie)
+                }
+            }
+
+            override fun onPostExecute(result: Unit?) {
+                super.onPostExecute(result)
+
+                if(mostPopularLoader.mode == MODE_GRID){
+                    mostPopularLoader.mDatabaseGridAdapter!!.addList(arrayList)
+                }else {
+                    mostPopularLoader.mDatabaseListAdapter!!.addList(arrayList)
+                }
+
             }
         }
     }
 
 
     override fun onCreateLoader(id: Int, args: Bundle?): Loader<Cursor> {
-        when(id){
-            ID_MOST_POPULAR_LOADER -> {
-                val maxPage = page.toString()
+        val maxPage = page.toString()
+        Log.v("Loader", "Most Popular Loader is now searching for page no $maxPage")
 
-                val mostPopularQueryUri = MoviesContract.MostPopularEntry.CONTENT_URI
-                Log.v("Max PAge", maxPage)
-                return CursorLoader(context,
-                        mostPopularQueryUri,
-                        MoviesContract.MostPopularEntry.getColumns(),
-                        "${MoviesContract.MostPopularEntry.COLUMN_ORIGINAL_LANGUAGE} = ? AND ${MoviesContract.MostPopularEntry.COLUMN_PAGE_NO} <= ? ",
-                        arrayOf("en", maxPage),
-                        MoviesContract.MostPopularEntry.COLUMN_PAGE_NO + " ASC")
-            }
-            else->throw RuntimeException("loader not implemented $id")
+        //Get reference to the table for most popular
+        val mostPopularQueryUri = MoviesContract.MostPopularEntry.CONTENT_URI
+
+        var startQuery = "(${MoviesContract.COLUMN_ORIGINAL_LANGUAGE} = 'en'"
+        //Make selection query handle extra cases
+        if (Injection.isBollywoodEnabled) {
+            startQuery = "$startQuery OR ${MoviesContract.COLUMN_ORIGINAL_LANGUAGE} = 'hi'"
         }
+        if(Injection.isAnimeEnabled) {
+            startQuery = "$startQuery OR ${MoviesContract.COLUMN_ORIGINAL_LANGUAGE} = 'ja' "
+        }
+
+        startQuery = "$startQuery)"
+
+        return CursorLoader(context,
+                mostPopularQueryUri,
+                MoviesContract.getNormalColumns(),
+                "$startQuery AND ${MoviesContract.COLUMN_PAGE_NO} = ? ",
+                arrayOf(maxPage),
+                MoviesContract.COLUMN_PAGE_NO + " ASC")
+
     }
 
+
     override fun onLoadFinished(loader: Loader<Cursor>, data: Cursor?) {
-        Log.d("data", (data == null).toString())
+
         var empty = true
-        if(data!= null && data.moveToFirst()){
+        if (data != null && data.moveToFirst()) {
             empty = data.getInt(0) == 0
         }
-        if(empty){
-            UpdateTopRatedDatabaseTask(this).execute(1)
+
+        //If the database is empty we need to make the request
+        if (empty) {
+            UpdateMostPopularDatabaseTask(this).execute(1)
         }
-        else{
-            if(mode == MODE_LIST){
-                Log.v("Swap Check", "${mDatabaseListAdapter!!.itemCount} and ${data?.count}")
-                if(mDatabaseListAdapter!!.itemCount == data?.count && isFirst){
-                    UpdateTopRatedDatabaseTask(this).execute()
+
+        else {
+
+            //If we are working with a list of views
+            if (mode == MODE_LIST) {
+                if (mDatabaseListAdapter!!.itemCount == data?.count && isFirst) {
+                    UpdateMostPopularDatabaseTask(this).execute()
                     isFirst = false
-                }else if(mDatabaseListAdapter!!.itemCount < data!!.count){
-                    Log.v("Swapping", "I am swapping")
-                    mDatabaseListAdapter!!.swapCursor(data)
+                }
+                else {
+                    UpdateMostPopularDataSet(this, data!!).execute()
                     Log.v("Now size", mDatabaseListAdapter!!.itemCount.toString())
-                    isLoading = false
-                }else{
                     isLoading = false
                 }
             }
 
-            else{
-                Log.v("Swap Check", "${mDatabaseGridAdapter!!.itemCount} and ${data?.count}")
-                if(mDatabaseGridAdapter!!.itemCount == data?.count && isFirst){
-                    UpdateTopRatedDatabaseTask(this).execute()
+            //If we are working with a grid of views
+            else {
+                if (mDatabaseGridAdapter!!.itemCount == data?.count && isFirst) {
+                    UpdateMostPopularDatabaseTask(this).execute()
                     isFirst = false
-                }else{
-                    Log.v("Swapping", "I am swapping")
-                    mDatabaseGridAdapter!!.swapCursor(data)
+                }
+                else {
+                    UpdateMostPopularDataSet(this, data!!).execute()
                     Log.v("Now size", mDatabaseGridAdapter!!.itemCount.toString())
                     isLoading = false
                 }
@@ -119,17 +175,15 @@ class MostPopularLoader(val context: Context, val mode: Int): LoaderManager.Load
     }
 
     override fun onLoaderReset(loader: Loader<Cursor>) {
-        if(mode == MODE_LIST){
-            mDatabaseListAdapter!!.swapCursor(null)
-            mDatabaseListAdapter!!.notifyDataSetChanged()
-        }
-        else {
-            mDatabaseGridAdapter!!.swapCursor(null)
-            mDatabaseGridAdapter!!.notifyDataSetChanged()
+        if (mode == MODE_LIST) {
+            mDatabaseListAdapter!!.clearList()
+
+        } else {
+            mDatabaseGridAdapter!!.clearList()
         }
     }
 
-    fun updatePage(){
+    fun updatePage() {
         page = page + 1
         isFirst = true
     }
