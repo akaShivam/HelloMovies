@@ -2,5 +2,5 @@ package com.rahul.mymovies
 
 object Injection {
     var isBollywoodEnabled = true
-    var isAnimeEnabled = true
+    var isAnimeEnabled = false
 }

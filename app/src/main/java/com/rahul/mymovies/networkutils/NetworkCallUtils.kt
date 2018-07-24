@@ -18,6 +18,7 @@ object NetworkCallUtils {
     private val TAG = NetworkCallUtils::class.java.simpleName
 
     private const val APP_ID1 = "17a9e2faba4b24afe4bbf42451dd32b0"
+    private const val APP_ID2 = "b56094eb8308f82481e7c6ddbd9014cc"
 
     private const val TOP_RATED_MOVIE_URl = "https://api.themoviedb.org/3/movie/top_rated"
     private const val NOW_PLAYING_MOVIE_URl = "https://api.themoviedb.org/3/movie/now_playing"
@@ -96,11 +97,20 @@ object NetworkCallUtils {
 
     fun getUrlForTmdbResponse(movieId: Int) : String {
         val tmdbUri = Uri.parse("$PARTICULAR_MOVIE_URL/$movieId").buildUpon()
-                .appendQueryParameter(APPID_PARAM, APP_ID1)
+                .appendQueryParameter(APPID_PARAM, APP_ID2)
                 .appendQueryParameter(LANGUAGE_PARAM, "en-US")
                 .appendQueryParameter("append_to_response", "videos,reviews,credits")
                 .build()
         return tmdbUri.toString()
+    }
+
+    fun getUrlForRecommendedMovies(movieId: Int): String {
+        val recommendedMoviesUri = Uri.parse("$PARTICULAR_MOVIE_URL/$movieId/recommendations").buildUpon()
+                .appendQueryParameter(APPID_PARAM, APP_ID2)
+                .appendQueryParameter(LANGUAGE_PARAM, "en-US")
+                .appendQueryParameter(PAGE_PARAM, "1")
+                .build()
+        return recommendedMoviesUri.toString()
     }
 
     fun getResponseFromUrl(urlString: String): String?{

@@ -24,6 +24,9 @@ object MoviesContract {
     const val COLUMN_ORIGINAL_LANGUAGE = "original_language"
     const val COLUMN_PAGE_NO = "page"
 
+    const val COLUMN_DETAIL_RESPONSE = "detail_response"
+    const val COLUMN_IMDB_RESPONSE = "imdb_response"
+
     private val COLUMNS_NORMAL = arrayOf(COLUMN_MOVIE_ID_KEY
             , COLUMN_TITLE
             , COLUMN_OVERVIEW
@@ -108,6 +111,41 @@ object MoviesContract {
                     COLUMN_BACKDROP_PATH + " TEXT, " +
                     COLUMN_PAGE_NO + " INTEGER, " +
                     " UNIQUE (" + COLUMN_MOVIE_ID_KEY + ") ON CONFLICT REPLACE );"
+        }
+    }
+
+    class FavoritesEntry : BaseColumns {
+        companion object {
+            val CONTENT_URI : Uri = BASE_CONTENT_URI.buildUpon().appendPath(PATH_FAVORITES).build()
+
+            const val TABLE_NAME = "favorites"
+
+            const val SQL_CREATE_TABLE = "CREATE TABLE " + TABLE_NAME + " (" +
+                    COLUMN_MOVIE_ID_KEY + " INTEGER, " +
+                    COLUMN_TITLE + " TEXT, " +
+                    COLUMN_OVERVIEW + " TEXT, " +
+                    COLUMN_RELEASE_DATE + " TEXT, " +
+                    COLUMN_AVERAGE_VOTE + " REAL, " +
+                    COLUMN_POSTER_PATH + " TEXT, " +
+                    COLUMN_BACKDROP_PATH + " TEXT, " +
+                    COLUMN_DETAIL_RESPONSE + " TEXT, " +
+                    COLUMN_IMDB_RESPONSE + " TEXT, " +
+                    " UNIQUE (" + COLUMN_MOVIE_ID_KEY + ") ON CONFLICT REPLACE );"
+
+            val COLUMNS_FAVORITES = arrayOf(MoviesContract.COLUMN_MOVIE_ID_KEY
+                        , MoviesContract.COLUMN_TITLE
+                        , MoviesContract.COLUMN_OVERVIEW
+                        , MoviesContract.COLUMN_RELEASE_DATE
+                        , MoviesContract.COLUMN_AVERAGE_VOTE
+                        , MoviesContract.COLUMN_POSTER_PATH
+                        , MoviesContract.COLUMN_BACKDROP_PATH
+                        , MoviesContract.COLUMN_DETAIL_RESPONSE
+                        , MoviesContract.COLUMN_IMDB_RESPONSE)
+
+
+            const val INDEX_COLUMN_BACKDROP_PATH = 6
+            const val INDEX_COLUMN_MOVIE_DETAIL = 7
+            const val INDEX_COLUMN_IMDB_RESPONSE = 8
         }
     }
 }

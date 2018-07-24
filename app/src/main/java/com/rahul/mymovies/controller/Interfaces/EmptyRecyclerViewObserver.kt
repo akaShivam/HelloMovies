@@ -1,4 +1,4 @@
-package com.rahul.mymovies.controller
+package com.rahul.mymovies.controller.Interfaces
 
 import android.support.v7.widget.RecyclerView
 import android.view.View
@@ -26,6 +26,11 @@ class EmptyRecyclerViewObserver(val rv: RecyclerView, val emptyView: View, val p
 
     override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
         super.onItemRangeInserted(positionStart, itemCount)
+        checkEmpty()
+    }
+
+    override fun onItemRangeChanged(positionStart: Int, itemCount: Int) {
+        super.onItemRangeChanged(positionStart, itemCount)
         checkEmpty()
     }
 }

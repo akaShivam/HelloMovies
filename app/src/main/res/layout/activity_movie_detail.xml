@@ -60,7 +60,7 @@
         android:clickable="true"
         app:layout_anchor="@+id/app_bar"
         app:layout_anchorGravity="right|bottom"
-        app:srcCompat="@drawable/ic_menu_slideshow" />
+        app:srcCompat="@drawable/ic_favorite_border" />
 
 
 </android.support.design.widget.CoordinatorLayout>

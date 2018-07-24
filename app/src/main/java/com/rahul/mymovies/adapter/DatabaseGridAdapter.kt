@@ -17,7 +17,7 @@ import com.rahul.mymovies.models.Movie
 /*
     Class that uses a cursor to generate the layout to be displayed in the grid
  */
-class DatabaseGridAdapter(val context: Context, private val itemClick: (Movie) -> Unit) : RecyclerView.Adapter<DatabaseGridAdapter.MovieGridViewHolder>() {
+class DatabaseGridAdapter(val context: Context, private val itemClick: (Movie, Int) -> Unit) : RecyclerView.Adapter<DatabaseGridAdapter.MovieGridViewHolder>() {
 
     private var mGridList =  ArrayList<Movie>()
 
@@ -32,30 +32,42 @@ class DatabaseGridAdapter(val context: Context, private val itemClick: (Movie) -
 
     override fun onBindViewHolder(holder: MovieGridViewHolder, position: Int) {
         if (position < itemCount) {
-            holder.bind(context, mGridList[position])
+            holder.bind(context, mGridList[position], holder.adapterPosition)
         }
     }
 
-    inner class MovieGridViewHolder(itemView: View, private val itemClick: (Movie) -> Unit) : RecyclerView.ViewHolder(itemView) {
+    inner class MovieGridViewHolder(itemView: View, private val itemClick: (Movie, Int) -> Unit) : RecyclerView.ViewHolder(itemView) {
 
         private val titleView = itemView.findViewById<TextView>(R.id.movieTitleTextView)
         private val posterView = itemView.findViewById<ImageView>(R.id.moviePosterImage)
 
 
-        fun bind(context: Context, movie: Movie) {
+        fun bind(context: Context, movie: Movie, position: Int) {
             titleView.text = movie.title
             Glide.with(context).load(movie.imagePath)
                     .into(posterView)
 
-            itemView.setOnClickListener { itemClick(movie) }
+            itemView.setOnClickListener { itemClick(movie, position) }
         }
     }
 
     fun addList(list: ArrayList<Movie>){
-        val startIndex = itemCount
-        mGridList.addAll(list)
-        val endIndex = itemCount
-        notifyItemRangeInserted(startIndex, endIndex-1)
+        if(itemCount == 0){
+            val startIndex = itemCount
+            mGridList.addAll(list)
+            val endIndex = itemCount
+            notifyItemRangeInserted(startIndex, endIndex-1)
+        }
+        else if(mGridList[itemCount - 1].movieId != list[list.size - 1].movieId){
+            val startIndex = itemCount
+            mGridList.addAll(list)
+            val endIndex = itemCount
+            notifyItemRangeInserted(startIndex, endIndex-1)
+        }
+    }
+
+    fun swapList(list: ArrayList<Movie>){
+        mGridList = list
     }
 
     fun clearList(){

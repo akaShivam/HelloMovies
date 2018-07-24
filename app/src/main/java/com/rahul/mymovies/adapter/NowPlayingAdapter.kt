@@ -19,7 +19,7 @@ import com.rahul.mymovies.models.Movie
  */
 class NowPlayingAdapter(val context: Context, private val itemClick: (Movie) -> Unit) : RecyclerView.Adapter<NowPlayingAdapter.MovieListViewHolder>() {
     private var lastLoadedPosition = -1
-    private var mCursor: Cursor? = null
+    private var mList =  ArrayList<Movie>()
 
 
 
@@ -29,16 +29,12 @@ class NowPlayingAdapter(val context: Context, private val itemClick: (Movie) -> 
     }
 
     override fun getItemCount(): Int {
-        if (mCursor != null) {
-            return mCursor!!.count
-        }
-        return 0
+        return mList.size
     }
 
-    override fun onBindViewHolder(holder: MovieListViewHolder, position: Int) {
-        if (mCursor != null && !mCursor!!.isClosed && position< itemCount) {
-            mCursor!!.moveToPosition(position)
-            holder.bind(context, mCursor)
+    override fun onBindViewHolder(holder: NowPlayingAdapter.MovieListViewHolder, position: Int) {
+        if (position < itemCount) {
+            holder.bind(context, mList[position])
             startAddAnimation(holder.itemView, position)
         }
     }
@@ -61,16 +57,7 @@ class NowPlayingAdapter(val context: Context, private val itemClick: (Movie) -> 
         private val titleView = itemView.findViewById<TextView>(R.id.movieTitleTextView)
         private val posterView = itemView.findViewById<ImageView>(R.id.moviePosterImage)
 
-        fun bind(context: Context, mCursor: Cursor?) {
-            val movieId = mCursor!!.getInt(MoviesContract.INDEX_COLUMN_MOVIE_ID_KEY)
-            val title = mCursor.getString(MoviesContract.INDEX_COLUMN_TITLE)
-            val overview = mCursor.getString(MoviesContract.INDEX_COLUMN_OVERVIEW)
-            val averageVote = mCursor.getDouble(MoviesContract.INDEX_COLUMN_AVERAGE_VOTE)
-            val releaseDate = mCursor.getString(MoviesContract.INDEX_COLUMN_RELEASE_DATE)
-            val imagePath = mCursor.getString(MoviesContract.INDEX_COLUMN_POSTER_PATH)
-            val backdropPath = mCursor.getString(MoviesContract.INDEX_COLUMN_BACKDROP_PATH)
-
-            val movie = Movie(movieId, title, overview,imagePath, backdropPath, releaseDate, averageVote)
+        fun bind(context: Context, movie: Movie) {
             titleView.text = movie.title
             Glide.with(context).load(movie.imagePath)
                     .into(posterView)
@@ -83,8 +70,13 @@ class NowPlayingAdapter(val context: Context, private val itemClick: (Movie) -> 
         }
     }
 
-    fun swapCursor(cursor: Cursor?) {
-        mCursor = cursor
+    fun addList(list: ArrayList<Movie>){
+        mList.addAll(list)
+        notifyDataSetChanged()
+    }
+
+    fun clearList(){
+        mList.clear()
         notifyDataSetChanged()
     }
 }

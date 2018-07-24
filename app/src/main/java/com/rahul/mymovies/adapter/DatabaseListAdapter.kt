@@ -1,7 +1,6 @@
 package com.rahul.mymovies.adapter
 
 import android.content.Context
-import android.database.Cursor
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -17,7 +16,7 @@ import com.rahul.mymovies.models.Movie
 /*
     Class that uses a cursor to generate the layout to be displayed in the list
  */
-class DatabaseListAdapter(val context: Context, private val itemClick: (Movie) -> Unit) : RecyclerView.Adapter<DatabaseListAdapter.MovieListViewHolder>() {
+class DatabaseListAdapter(val context: Context?, private val itemClick: (Movie) -> Unit) : RecyclerView.Adapter<DatabaseListAdapter.MovieListViewHolder>() {
     private var lastLoadedPosition = -1
 
     private var mGridList =  ArrayList<Movie>()
@@ -36,7 +35,7 @@ class DatabaseListAdapter(val context: Context, private val itemClick: (Movie) -
 
     override fun onBindViewHolder(holder: MovieListViewHolder, position: Int) {
         if (position < itemCount) {
-            holder.bind(context, mGridList[position])
+            holder.bind(context!!, mGridList[position])
             startAddAnimation(holder.itemView, position)
         }
     }
@@ -64,6 +63,7 @@ class DatabaseListAdapter(val context: Context, private val itemClick: (Movie) -
             Glide.with(context).load(movie.imagePath)
                     .into(posterView)
 
+
             itemView.setOnClickListener { itemClick(movie) }
         }
 
@@ -74,11 +74,24 @@ class DatabaseListAdapter(val context: Context, private val itemClick: (Movie) -
 
 
     fun addList(list: ArrayList<Movie>){
-        val startIndex = itemCount
-        mGridList.addAll(list)
-        val endIndex = itemCount
-        notifyItemRangeInserted(startIndex, endIndex-1)
+        if(lastLoadedPosition == -1){
+            clearList()
+        }
+        if(itemCount == 0){
+            val startIndex = itemCount
+            mGridList.addAll(list)
+            val endIndex = itemCount
+            notifyItemRangeInserted(startIndex, endIndex-1)
+        }
+        else if(mGridList[itemCount - 1].movieId != list[list.size - 1].movieId){
+            val startIndex = itemCount
+            mGridList.addAll(list)
+            val endIndex = itemCount
+            notifyItemRangeInserted(startIndex, endIndex-1)
+        }
+
     }
+
 
     fun clearList(){
         mGridList.clear()

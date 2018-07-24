@@ -8,16 +8,15 @@ import android.support.v4.app.Fragment
 import android.os.Bundle
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.rahul.mymovies.R
 import com.rahul.mymovies.adapter.DatabaseListAdapter
 import com.rahul.mymovies.adapter.NowPlayingAdapter
-import com.rahul.mymovies.controller.EmptyRecyclerViewObserver
-import com.rahul.mymovies.controller.ListEndlessScrollListener
-import com.rahul.mymovies.controller.OnFragmentInteractionListener
+import com.rahul.mymovies.controller.Interfaces.EmptyRecyclerViewObserver
+import com.rahul.mymovies.controller.Interfaces.ListEndlessScrollListener
+import com.rahul.mymovies.controller.Interfaces.OnFragmentInteractionListener
 import com.rahul.mymovies.loaders.MostPopularLoader
 import com.rahul.mymovies.loaders.NowPlayingLoader
 import com.rahul.mymovies.loaders.TopRatedLoader
@@ -98,7 +97,7 @@ class MainActivityFragment : Fragment(){
         nowPlayingAdapter.registerAdapterDataObserver(EmptyRecyclerViewObserver(nowPlayingRecyclerView, nowPlayingErrorView, nowPlayingProgressBar))
         nowPlayingRecyclerView.adapter = nowPlayingAdapter
 
-        nowPlayingLoader = NowPlayingLoader(mContext, nowPlayingAdapter)
+        nowPlayingLoader = NowPlayingLoader(mContext!!, nowPlayingAdapter)
     }
 
     private fun initalizeMostPopular() {
@@ -106,7 +105,7 @@ class MainActivityFragment : Fragment(){
         mostPopularRecyclerView.layoutManager = layoutManager
         mostPopularRecyclerView.itemAnimator = DefaultItemAnimator()
 
-        databaseListAdapter = DatabaseListAdapter(mContext!!){ movie->
+        databaseListAdapter = DatabaseListAdapter(mContext){ movie->
             val intentDetailActivity = Intent(mContext, MovieDetailActivity::class.java)
 
             intentDetailActivity.putExtra("movie", movie)

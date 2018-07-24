@@ -14,9 +14,9 @@ import android.view.ViewGroup
 
 import com.rahul.mymovies.R
 import com.rahul.mymovies.adapter.DatabaseGridAdapter
-import com.rahul.mymovies.controller.EmptyRecyclerViewObserver
-import com.rahul.mymovies.controller.GridEndlessScrollListener
-import com.rahul.mymovies.controller.OnFragmentInteractionListener
+import com.rahul.mymovies.controller.Interfaces.EmptyRecyclerViewObserver
+import com.rahul.mymovies.controller.Interfaces.GridEndlessScrollListener
+import com.rahul.mymovies.controller.Interfaces.OnFragmentInteractionListener
 import com.rahul.mymovies.loaders.TopRatedLoader
 import com.rahul.mymovies.controller.moviedetailactivity.MovieDetailActivity
 import kotlinx.android.synthetic.main.fragment_top_rated.*
@@ -60,7 +60,7 @@ class TopRatedFragment : Fragment() {
         topRatedGridView.layoutManager = layoutManager
         topRatedGridView.itemAnimator = DefaultItemAnimator()
 
-        databaseListAdapter = DatabaseGridAdapter(mContext!!){ movie->
+        databaseListAdapter = DatabaseGridAdapter(mContext!!){ movie, _->
             val intentDetailActivity = Intent(mContext, MovieDetailActivity::class.java)
 
             intentDetailActivity.putExtra("movie", movie)

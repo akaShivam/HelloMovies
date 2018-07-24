@@ -14,12 +14,14 @@ class MoviesDbHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         db?.execSQL(MoviesContract.TopRatedEntry.SQL_CREATE_TABLE)
         db?.execSQL(MoviesContract.MostPopularEntry.SQL_CREATE_TABLE)
         db?.execSQL(MoviesContract.NowPlayingEntry.SQL_CREATE_TABLE)
+        db?.execSQL(MoviesContract.FavoritesEntry.SQL_CREATE_TABLE)
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
         db?.execSQL("DROP TABLE IF EXISTS " + MoviesContract.TopRatedEntry.TABLE_NAME)
         db?.execSQL("DROP TABLE IF EXISTS " + MoviesContract.MostPopularEntry.TABLE_NAME)
         db?.execSQL("DROP TABLE IF EXISTS " + MoviesContract.NowPlayingEntry.TABLE_NAME)
+        db?.execSQL("DROP TABLE IF EXISTS " + MoviesContract.FavoritesEntry.TABLE_NAME)
         onCreate(db)
     }
 }

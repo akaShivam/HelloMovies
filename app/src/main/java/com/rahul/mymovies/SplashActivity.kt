@@ -7,14 +7,10 @@ import com.rahul.mymovies.controller.HomeActivity
 
 class SplashActivity : AppCompatActivity() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-
+    override fun onResume() {
+        super.onResume()
         val intent = Intent(this, HomeActivity::class.java)
         startActivity(intent)
         finish()
     }
-
-
 }

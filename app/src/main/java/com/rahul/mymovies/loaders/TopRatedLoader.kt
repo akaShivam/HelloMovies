@@ -20,7 +20,7 @@ import com.rahul.mymovies.networkutils.NetworkCallHelper
 class TopRatedLoader(val context: Context, val mode: Int) : LoaderManager.LoaderCallbacks<Cursor> {
 
     var page = 1
-    private var isFirst = false
+    private var isFirst = true
     var isLoading = true
 
     private var mDatabaseListAdapter: DatabaseListAdapter? = null
@@ -133,35 +133,33 @@ class TopRatedLoader(val context: Context, val mode: Int) : LoaderManager.Loader
         if (data != null && data.moveToFirst()) {
             empty = data.getInt(0) == 0
         }
-        if (empty) {
-            UpdateTopRatedDatabaseTask(this).execute(1)
-        } else {
-            //If we are working with a list of views
-            if (mode == TopRatedLoader.MODE_LIST) {
-                if (mDatabaseListAdapter!!.itemCount == data?.count && isFirst) {
-                    UpdateTopRatedDatabaseTask(this).execute()
-                    isFirst = false
-                }
-                else {
-                    UpdateTopRatedDataset(this, data!!).execute()
-                    Log.v("Now size", mDatabaseListAdapter!!.itemCount.toString())
-                    isLoading = false
-                }
+        //If we are working with a list of views
+        if (mode == MostPopularLoader.MODE_LIST) {
+            if (empty && isFirst) {
+                UpdateTopRatedDatabaseTask(this).execute()
+                isFirst = false
+            } else if(!empty){
+                UpdateTopRatedDataset(this, data!!).execute()
+                Log.v("Now size", mDatabaseListAdapter!!.itemCount.toString())
+                isLoading = false
+                isFirst = true
             }
-            //If we are working with a grid of views
-            else {
-                if (mDatabaseGridAdapter!!.itemCount == data?.count && isFirst) {
-                    UpdateTopRatedDatabaseTask(this).execute()
-                    isFirst = false
-                }
-                else {
-                    UpdateTopRatedDataset(this, data!!).execute()
-                    Log.v("Now size", mDatabaseGridAdapter!!.itemCount.toString())
-                    isLoading = false
-                }
-            }
-
         }
+
+        //If we are working with a grid of views
+        else {
+            if (empty && isFirst) {
+                UpdateTopRatedDatabaseTask(this).execute()
+                isFirst = false
+            } else if(!empty){
+                UpdateTopRatedDataset(this, data!!).execute()
+                Log.v("Now size", mDatabaseGridAdapter!!.itemCount.toString())
+                isLoading = false
+                isFirst = true
+            }
+        }
+
+
     }
 
     override fun onLoaderReset(loader: Loader<Cursor>) {

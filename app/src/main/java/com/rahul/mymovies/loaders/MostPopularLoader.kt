@@ -18,7 +18,7 @@ import com.rahul.mymovies.networkutils.NetworkCallHelper
 class MostPopularLoader(val context: Context, private val mode: Int) : LoaderManager.LoaderCallbacks<Cursor> {
 
     var page = 1
-    private var isFirst = false
+    private var isFirst = true
     var isLoading = true
 
     private var mDatabaseListAdapter: DatabaseListAdapter? = null
@@ -70,11 +70,11 @@ class MostPopularLoader(val context: Context, private val mode: Int) : LoaderMan
             }
         }
 
-        class UpdateMostPopularDataSet(private val mostPopularLoader: MostPopularLoader, private val mCursor: Cursor) : AsyncTask<Unit, Unit, Unit>(){
+        class UpdateMostPopularDataSet(private val mostPopularLoader: MostPopularLoader, private val mCursor: Cursor) : AsyncTask<Unit, Unit, Unit>() {
             val arrayList = ArrayList<Movie>()
             override fun doInBackground(vararg params: Unit?) {
-                val count = mCursor!!.count
-                for ( i in 0 until count){
+                val count = mCursor.count
+                for (i in 0 until count) {
                     mCursor.moveToPosition(i)
                     val movieId = mCursor.getInt(MoviesContract.INDEX_COLUMN_MOVIE_ID_KEY)
                     val title = mCursor.getString(MoviesContract.INDEX_COLUMN_TITLE)
@@ -92,9 +92,9 @@ class MostPopularLoader(val context: Context, private val mode: Int) : LoaderMan
             override fun onPostExecute(result: Unit?) {
                 super.onPostExecute(result)
 
-                if(mostPopularLoader.mode == MODE_GRID){
+                if (mostPopularLoader.mode == MODE_GRID) {
                     mostPopularLoader.mDatabaseGridAdapter!!.addList(arrayList)
-                }else {
+                } else {
                     mostPopularLoader.mDatabaseListAdapter!!.addList(arrayList)
                 }
 
@@ -115,7 +115,7 @@ class MostPopularLoader(val context: Context, private val mode: Int) : LoaderMan
         if (Injection.isBollywoodEnabled) {
             startQuery = "$startQuery OR ${MoviesContract.COLUMN_ORIGINAL_LANGUAGE} = 'hi'"
         }
-        if(Injection.isAnimeEnabled) {
+        if (Injection.isAnimeEnabled) {
             startQuery = "$startQuery OR ${MoviesContract.COLUMN_ORIGINAL_LANGUAGE} = 'ja' "
         }
 
@@ -138,41 +138,33 @@ class MostPopularLoader(val context: Context, private val mode: Int) : LoaderMan
             empty = data.getInt(0) == 0
         }
 
-        //If the database is empty we need to make the request
-        if (empty) {
-            UpdateMostPopularDatabaseTask(this).execute(1)
+        //If we are working with a list of views
+        if (mode == MODE_LIST) {
+            if (empty && isFirst) {
+                UpdateMostPopularDatabaseTask(this).execute()
+                isFirst = false
+            } else if(!empty){
+                UpdateMostPopularDataSet(this, data!!).execute()
+                Log.v("Now size", mDatabaseListAdapter!!.itemCount.toString())
+                isLoading = false
+                isFirst = true
+            }
         }
 
+        //If we are working with a grid of views
         else {
-
-            //If we are working with a list of views
-            if (mode == MODE_LIST) {
-                if (mDatabaseListAdapter!!.itemCount == data?.count && isFirst) {
-                    UpdateMostPopularDatabaseTask(this).execute()
-                    isFirst = false
-                }
-                else {
-                    UpdateMostPopularDataSet(this, data!!).execute()
-                    Log.v("Now size", mDatabaseListAdapter!!.itemCount.toString())
-                    isLoading = false
-                }
+            if (empty && isFirst) {
+                UpdateMostPopularDatabaseTask(this).execute()
+                isFirst = false
+            } else if(!empty){
+                UpdateMostPopularDataSet(this, data!!).execute()
+                Log.v("Now size", mDatabaseGridAdapter!!.itemCount.toString())
+                isLoading = false
             }
-
-            //If we are working with a grid of views
-            else {
-                if (mDatabaseGridAdapter!!.itemCount == data?.count && isFirst) {
-                    UpdateMostPopularDatabaseTask(this).execute()
-                    isFirst = false
-                }
-                else {
-                    UpdateMostPopularDataSet(this, data!!).execute()
-                    Log.v("Now size", mDatabaseGridAdapter!!.itemCount.toString())
-                    isLoading = false
-                }
-            }
-
         }
+
     }
+
 
     override fun onLoaderReset(loader: Loader<Cursor>) {
         if (mode == MODE_LIST) {

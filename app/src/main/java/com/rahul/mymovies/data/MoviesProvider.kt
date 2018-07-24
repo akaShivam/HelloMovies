@@ -5,6 +5,7 @@ import android.content.ContentValues
 import android.content.UriMatcher
 import android.database.Cursor
 import android.net.Uri
+import android.util.Log
 
 class MoviesProvider : ContentProvider() {
     private lateinit var mOpenHelper: MoviesDbHelper
@@ -12,6 +13,7 @@ class MoviesProvider : ContentProvider() {
     private val CODE_TOP_RATED = 100
     private val CODE_MOST_POPULAR = 200
     private val CODE_NOW_PLAYING = 300
+    private val CODE_FAVORITES = 400
 
     private val sURIMatcher = UriMatcher(UriMatcher.NO_MATCH)
 
@@ -21,6 +23,7 @@ class MoviesProvider : ContentProvider() {
         sURIMatcher.addURI(authority, MoviesContract.PATH_TOP_RATED, CODE_TOP_RATED)
         sURIMatcher.addURI(authority, MoviesContract.PATH_MOST_POPULAR, CODE_MOST_POPULAR)
         sURIMatcher.addURI(authority, MoviesContract.PATH_NOW_PLAYING, CODE_NOW_PLAYING)
+        sURIMatcher.addURI(authority, MoviesContract.PATH_FAVORITES, CODE_FAVORITES)
     }
 
 
@@ -30,13 +33,13 @@ class MoviesProvider : ContentProvider() {
     }
 
     override fun query(uri: Uri?, projection: Array<out String>?, selection: String?, selectionArgs: Array<out String>?, sortOrder: String?): Cursor {
-        var cursor: Cursor
+        val cursor: Cursor
 
         when(sURIMatcher.match(uri)){
             CODE_TOP_RATED -> {
                 cursor = mOpenHelper.readableDatabase.query(
                         MoviesContract.TopRatedEntry.TABLE_NAME,
-                        null,
+                        projection,
                         selection,
                         selectionArgs,
                         null,
@@ -47,7 +50,7 @@ class MoviesProvider : ContentProvider() {
             CODE_MOST_POPULAR -> {
                 cursor = mOpenHelper.readableDatabase.query(
                         MoviesContract.MostPopularEntry.TABLE_NAME,
-                        null,
+                        projection,
                         selection,
                         selectionArgs,
                         null,
@@ -57,13 +60,24 @@ class MoviesProvider : ContentProvider() {
             CODE_NOW_PLAYING -> {
                 cursor = mOpenHelper.readableDatabase.query(
                         MoviesContract.NowPlayingEntry.TABLE_NAME,
-                        null,
+                        projection,
                         selection,
                         selectionArgs,
                         null,
                         null,
                         sortOrder)
             }
+            CODE_FAVORITES -> {
+                cursor = mOpenHelper.readableDatabase.query(
+                        MoviesContract.FavoritesEntry.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder)
+            }
+
             else -> throw UnsupportedOperationException("Unknown uri $uri")
         }
 
@@ -72,6 +86,15 @@ class MoviesProvider : ContentProvider() {
     }
 
     override fun insert(uri: Uri?, values: ContentValues?): Uri {
+        val db = mOpenHelper.writableDatabase
+
+        when(sURIMatcher.match(uri)){
+            CODE_FAVORITES -> {
+                val id = db.insert(MoviesContract.FavoritesEntry.TABLE_NAME, null, values)
+                context.contentResolver.notifyChange(uri, null)
+                Log.v("Inserted", "Favorite has been inserted $id")
+            }
+        }
         return Uri.EMPTY
     }
 
@@ -150,11 +173,25 @@ class MoviesProvider : ContentProvider() {
         }
     }
 
+
+
     override fun update(uri: Uri?, values: ContentValues?, selection: String?, selectionArgs: Array<out String>?): Int {
         return 0
     }
 
     override fun delete(uri: Uri?, selection: String?, selectionArgs: Array<out String>?): Int {
+        val db = mOpenHelper.writableDatabase
+        when(sURIMatcher.match(uri)){
+            CODE_FAVORITES -> {
+                val del = db.delete(MoviesContract.FavoritesEntry.TABLE_NAME,
+                        selection,
+                        selectionArgs)
+                context.contentResolver.notifyChange(uri, null)
+                Log.v("Deleted", "Favorite has been deleted $del")
+                return 1
+            }
+        }
+
         return 0
     }
 
@@ -162,6 +199,8 @@ class MoviesProvider : ContentProvider() {
         return ""
     }
 
-
-
+    override fun shutdown() {
+        super.shutdown()
+        mOpenHelper.close()
+    }
 }
