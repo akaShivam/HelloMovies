@@ -6,7 +6,7 @@
 
 
 
-*🚀 Checkout the website live at** : https://thepasswordkeeper.netlify.app/
+**🚀 Checkout the website live at** : https://thepasswordkeeper.netlify.app/
 
 ## 🤔 Why?
 Let's be honest, PasswordKeeper is yet another password manager. With so many password manager already existing, one might wonder why should anyone choose PasswordKeeper. Few of the reasons is mentioned below - 
