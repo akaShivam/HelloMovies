@@ -1,7 +1,12 @@
 <p class='logo'>
   <img alt="logo" src="https://raw.githubusercontent.com/rahul-jha98/PasswordKeeper/main/public/assets/Logo.svg" width="480">
 </p>
+
 > Securely store your passwords in your Google Drive.
+
+
+
+> **🚀 Checkout the website live at** : https://thepasswordkeeper.netlify.app/
 
 ## 🤔 Why?
 Let's be honest, PasswordKeeper is yet another password manager. With so many password manager already existing, one might wonder why should anyone choose PasswordKeeper. Few of the reasons is mentioned below - 
@@ -11,6 +16,5 @@ Let's be honest, PasswordKeeper is yet another password manager. With so many pa
 - **Open Source** - The complete source code of PasswordKeeper is available on Github thus you can verify that there is nothing suspicious happening and also help make PasswordKeeper better for everyone. 
 
 
-> **🚀 Checkout the website live at** : https://thepasswordkeeper.netlify.app/
 
 
