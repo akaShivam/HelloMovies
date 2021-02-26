@@ -15,5 +15,5 @@ Let's be honest, PasswordKeeper is yet another password manager. With so many pa
 - **Open Source** - The complete source code of PasswordKeeper is available on Github thus you can verify that there is nothing suspicious happening and also help make PasswordKeeper better for everyone. 
 
 
-> **rocket Checkout the website live at** : https://thepasswordkeeper.netlify.app/
+> **🚀 Checkout the website live at** : https://thepasswordkeeper.netlify.app/
 
