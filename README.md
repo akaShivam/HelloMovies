@@ -9,7 +9,7 @@
 **🚀 Checkout the website live at** : https://thepasswordkeeper.netlify.app/
 
 ## 🤔 Why?
-Let's be honest, PasswordKeeper is yet another password manager. With so many password manager already existing, one might wonder why should anyone choose PasswordKeeper. Few of the reasons is mentioned below - 
+Technically speaking, PasswordKeeper is yet another password manager. With so many password manager already existing, one might wonder why should anyone choose PasswordKeeper. Few of the reasons is mentioned below - 
 - **No Backend** - PasswordKeeper is a standalone web app without any backend server. The data you enter is saved directly in your Google Drive. 
 - **Web Based** - While there are many password managers that do not have a backend but rather store the passwords in the user's mobile device itself. The limitation of this approach is that if you don't have your mobile near you, you cannot access your passwords.
 - **Free to use**
