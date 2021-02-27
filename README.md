@@ -1,20 +1,45 @@
-<p class='logo'>
-  <img alt="logo" src="https://raw.githubusercontent.com/rahul-jha98/PasswordKeeper/main/public/assets/Logo.svg" width="480">
-</p>
+<img alt="logo" src="https://raw.githubusercontent.com/rahul-jha98/Artistify.ai/assets/logowithtext.svg" width="480">
 
-> Securely store your passwords in your Google Drive.
+**Web-app to convert your images into art**
 
+## About
+Artistify.ai is a web-app that implements neural style transfer right in your browser. At its very core it is a tensorflow.js model 
+that implements neural style transfer. So, like any other neural style transfer based model it takes a content image and a style image 
+and returns a content image that is **drawn** following the style of style image. So, with an art piece as style image we can convert a normal
+content image into an its **artistified** version. 
 
+Then useing React.js and following Google's material-design guidelines, it provides an easy to use and polished interface to interact with the 
+model and use it as a full fledged web-app.
 
-**🚀 Checkout the website live at** : https://thepasswordkeeper.netlify.app/
+> **Checkout the website live at** : https://rahul-jha98.github.io/Artistify.ai/
 
-## 🤔 Why?
-Technically speaking, PasswordKeeper is yet another password manager. With so many password manager already existing, one might wonder why should anyone choose PasswordKeeper. Few of the reasons is mentioned below - 
-- **No Backend** - PasswordKeeper is a standalone web app without any backend server. The data you enter is saved directly in your Google Drive. 
-- **Web Based** - While there are many password managers that do not have a backend but rather store the passwords in the user's mobile device itself. The limitation of this approach is that if you don't have your mobile near you, you cannot access your passwords.
-- **Free to use**
-- **Open Source** - The complete source code of PasswordKeeper is available on Github thus you can verify that there is nothing suspicious happening and also help make PasswordKeeper better for everyone. 
+## Some screenshots
 
+### Home screen
+![Screenshot Home](../assets/Home.png)
 
+### Lite Version
+![Screenshot Lite](../assets/Lite.png)
 
+### Pro Version
+![Screenshot Pro](../assets/Pro.png)
 
+## Available Scripts
+
+In the project directory, you can run:
+
+### `npm start`
+
+Runs the app in the development mode.<br />
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+
+The page will reload if you make edits.<br />
+You will also see any lint errors in the console.
+
+### `npm run build`
+
+Builds the app for production to the `build` folder.<br />
+It correctly bundles React in production mode and optimizes the build for the best performance.
+
+The build is minified and the filenames include the hashes.<br />
+Your app is ready to be deployed!
