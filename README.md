@@ -1,4 +1,4 @@
-<img alt="logo" src="https://raw.githubusercontent.com/rahul-jha98/Artistify.ai/assets/logowithtext.svg" width="400">
+<img alt="logo" src="./logo.svg" width="400">
 
 **Web-app to convert your images into art**
 
