@@ -32,5 +32,12 @@ With so many password manager already existing, one might wonder why should anyo
 <img width="780px" src="https://raw.githubusercontent.com/rahul-jha98/PasswordKeeper/image_assets/Sheet.png" />
 
 <h4>Custom Categories</h4>
-<p>No one can provide categories for all the different type of propertiesPasswordKeeper allows you to add categories with custom field parameters to make sure you are not restricted by the default options</p>
 <img width="780px" src="https://raw.githubusercontent.com/rahul-jha98/PasswordKeeper/image_assets/Category.png" />
+
+
+## 🛠️ Tools used to build
+
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank"> <img align="left" alt="JavaScript" height ="48px"  src="https://raw.githubusercontent.com/rahul-jha98/github_readme_icons/main/language_and_tools/square/javascript/javascript.svg"> </a>
+<a href="https://reactjs.org/" target="_blank"> <img align="left" alt="React" height ="48px" src="https://raw.githubusercontent.com/rahul-jha98/github_readme_icons/main/language_and_tools/square/react/react.svg"></a>
+<a href="https://material-ui.com/" target="_blank"> <img align="left" alt="Material UI" height ="48px" src="https://raw.githubusercontent.com/rahul-jha98/README_icons/main/language_and_tools/square/material-ui/material-ui.svg"></a>
+<a href="https://github.com/rahul-jha98/sheets-database" target="_blank"> <img alt="Material UI" height ="48px" src="https://raw.githubusercontent.com/rahul-jha98/sheets-database/main/docs/assets/imgs/logo.svg"></a>
