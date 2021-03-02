@@ -22,13 +22,13 @@ With so many password manager already existing, one might wonder why should anyo
 ## 👀 How it looks
 
 <h5>Main Screen</h5>
-<img width="680px" align="center" src="https://raw.githubusercontent.com/rahul-jha98/PasswordKeeper/image_assets/Home.png" />
+<img width="720px" src="https://raw.githubusercontent.com/rahul-jha98/PasswordKeeper/image_assets/Home.png" />
 
 <h5>Detail Screen</h5>
-<img width="680px" align="center" src="https://raw.githubusercontent.com/rahul-jha98/PasswordKeeper/image_assets/Detail.png" />
+<img width="720px" src="https://raw.githubusercontent.com/rahul-jha98/PasswordKeeper/image_assets/Detail.png" />
 
 <h5>How it looks in Sheet</h5>
-<img width="680px" align="center" src="https://raw.githubusercontent.com/rahul-jha98/PasswordKeeper/image_assets/Sheet.png" />
+<img width="720px" src="https://raw.githubusercontent.com/rahul-jha98/PasswordKeeper/image_assets/Sheet.png" />
 
 <h5>Add Categories with Custom Fields</h5>
-<img width="680px" align="center" src="https://raw.githubusercontent.com/rahul-jha98/PasswordKeeper/image_assets/Category.png" />
+<img width="720px" src="https://raw.githubusercontent.com/rahul-jha98/PasswordKeeper/image_assets/Category.png" />
