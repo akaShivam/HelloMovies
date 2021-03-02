@@ -21,14 +21,14 @@ With so many password manager already existing, one might wonder why should anyo
 
 ## 👀 How it looks
 
-<h6 align="center">Main Screen</h6>
-<img height=175 align="center" src="https://raw.githubusercontent.com/rahul-jha98/PasswordKeeper/image_assets/Home.png" />
+<h5>Main Screen</h5>
+<img width="680px" align="center" src="https://raw.githubusercontent.com/rahul-jha98/PasswordKeeper/image_assets/Home.png" />
 
-<h6 align="center">Detail Screen</h6>
-<img height=175 align="center" src="https://raw.githubusercontent.com/rahul-jha98/PasswordKeeper/image_assets/Detail.png" />
+<h5>Detail Screen</h5>
+<img width="680px" align="center" src="https://raw.githubusercontent.com/rahul-jha98/PasswordKeeper/image_assets/Detail.png" />
 
-<h6 align="center">How it looks in Sheet</h6>
-<img height=175 align="center" src="https://raw.githubusercontent.com/rahul-jha98/PasswordKeeper/image_assets/Sheet.png" />
+<h5>How it looks in Sheet</h5>
+<img width="680px" align="center" src="https://raw.githubusercontent.com/rahul-jha98/PasswordKeeper/image_assets/Sheet.png" />
 
-<h6 align="center">Add Categories with Custom Fields</h6>
-<img height=175 align="center" src="https://raw.githubusercontent.com/rahul-jha98/PasswordKeeper/image_assets/Category.png" />
+<h5>Add Categories with Custom Fields</h5>
+<img width="680px" align="center" src="https://raw.githubusercontent.com/rahul-jha98/PasswordKeeper/image_assets/Category.png" />
