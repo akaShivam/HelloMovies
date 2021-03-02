@@ -1,45 +1,34 @@
-<img alt="logo" src="https://raw.githubusercontent.com/akaShivam/HelloMovies/master/logo.svg" width="400">
+<p class='logo'>
+  <img alt="logo" src="https://raw.githubusercontent.com/rahul-jha98/PasswordKeeper/image_assets/Logo.svg" width="480">
+</p>
 
-**Web-app to convert your images into art**
+> Securely store your passwords in your Google Drive.
 
-## About
-Artistify.ai is a web-app that implements neural style transfer right in your browser. At its very core it is a tensorflow.js model 
-that implements neural style transfer. So, like any other neural style transfer based model it takes a content image and a style image 
-and returns a content image that is **drawn** following the style of style image. So, with an art piece as style image we can convert a normal
-content image into an its **artistified** version. 
+**🚀 Checkout the website live at** : https://thepasswordkeeper.netlify.app/
 
-Then useing React.js and following Google's material-design guidelines, it provides an easy to use and polished interface to interact with the 
-model and use it as a full fledged web-app.
+Password Keeper is a web app that can be used to store your passwords or other account details in your Google Drive. The data is store in an encrypted format and can only be decrypted using a master password that you set during first login.
 
-> **Checkout the website live at** : https://rahul-jha98.github.io/Artistify.ai/
+## 🤔 Why Google Sheet?
+For storing all the encrypted passwords a Google Sheet stored in your Google Drive is used as a database. The reason for choosing this approach is that since the Google Sheet will only store the passwords of a singe person and the number of passwords a will hopefully never be more than hundred. Thus, there is not much performace harm in using Google Sheet to store data. 
+But the benefit of using Google Sheet is that it completely removes the need for a backend. Since, Google provides REST API to manipulate Google Sheet the web-app could directly interact with data stored in Google Sheet.
 
-## Some screenshots
+## ⚡ Features
+With so many password manager already existing, one might wonder why should anyone choose PasswordKeeper. Few of the reasons is mentioned below - 
+- **No Backend** - PasswordKeeper is a standalone web app without any backend server. The data you enter is saved directly in your Google Drive. 
+- **Web Based** - While there are many password managers that do not have a backend but rather store the passwords in the user's mobile device itself. The limitation of this approach is that if you don't have your mobile near you, you cannot access your passwords.
+- **Free to use**
+- **Open Source** - The complete source code of PasswordKeeper is available on Github thus you can verify that there is nothing suspicious happening and also help make PasswordKeeper better for everyone.
 
-### Home screen
-![Screenshot Home](../assets/Home.png)
+## 👀 How it looks
 
-### Lite Version
-![Screenshot Lite](../assets/Lite.png)
+<h6 align="center">Main Screen</h6>
+<img height=175 align="center" src="https://raw.githubusercontent.com/rahul-jha98/PasswordKeeper/image_assets/Home.png" />
 
-### Pro Version
-![Screenshot Pro](../assets/Pro.png)
+<h6 align="center">Detail Screen</h6>
+<img height=175 align="center" src="https://raw.githubusercontent.com/rahul-jha98/PasswordKeeper/image_assets/Detail.png" />
 
-## Available Scripts
+<h6 align="center">How it looks in Sheet</h6>
+<img height=175 align="center" src="https://raw.githubusercontent.com/rahul-jha98/PasswordKeeper/image_assets/Sheet.png" />
 
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+<h6 align="center">Add Categories with Custom Fields</h6>
+<img height=175 align="center" src="https://raw.githubusercontent.com/rahul-jha98/PasswordKeeper/image_assets/Category.png" />
