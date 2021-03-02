@@ -18,6 +18,7 @@ With so many password manager already existing, one might wonder why should anyo
 - **Web Based** - While there are many password managers that do not have a backend but rather store the passwords in the user's mobile device itself. The limitation of this approach is that if you don't have your mobile near you, you cannot access your passwords.
 - **Free to use**
 - **Open Source** - The complete source code of PasswordKeeper is available on Github thus you can verify that there is nothing suspicious happening and also help make PasswordKeeper better for everyone.
+- **Custom Categories** - PasswordKeeper provides option to add categories with custom fields to customize it based on you use case.
 
 ## 👀 How it looks
 
@@ -27,8 +28,9 @@ With so many password manager already existing, one might wonder why should anyo
 <h4>Detail Screen</h4>
 <img width="780px" src="https://raw.githubusercontent.com/rahul-jha98/PasswordKeeper/image_assets/Detail.png" />
 
-<h4>How it looks in Sheet</h4>
+<h4>Data in Google Sheet</h4>
 <img width="780px" src="https://raw.githubusercontent.com/rahul-jha98/PasswordKeeper/image_assets/Sheet.png" />
 
-<h4>Add Categories with Custom Fields</h4>
+<h4>Custom Categories</h4>
+<p>No one can provide categories for all the different type of propertiesPasswordKeeper allows you to add categories with custom field parameters to make sure you are not restricted by the default options</p>
 <img width="780px" src="https://raw.githubusercontent.com/rahul-jha98/PasswordKeeper/image_assets/Category.png" />
