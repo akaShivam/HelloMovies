@@ -41,3 +41,30 @@ With so many password manager already existing, one might wonder why should anyo
 <a href="https://reactjs.org/" target="_blank"> <img align="left" alt="React" height ="48px" src="https://raw.githubusercontent.com/rahul-jha98/github_readme_icons/main/language_and_tools/square/react/react.svg"></a>
 <a href="https://material-ui.com/" target="_blank"> <img align="left" alt="Material UI" height ="48px" src="https://raw.githubusercontent.com/rahul-jha98/README_icons/main/language_and_tools/square/material-ui/material-ui.svg"></a>
 <a href="https://github.com/rahul-jha98/sheets-database" target="_blank"> <img alt="Material UI" height ="48px" src="https://raw.githubusercontent.com/rahul-jha98/sheets-database/main/docs/assets/imgs/logo.svg"></a>
+
+## 🔧 Setup Local Environment
+
+_Make sure you have [Yarn](https://classic.yarnpkg.com/en/docs/install/#debian-stable)_
+
+1. Clone the repository
+
+```
+https://github.com/rahul-jha98/PasswordKeeper.git
+cd PasswordKeeper
+```
+
+2. Install dependencies
+
+```
+yarn install
+```
+
+3. Create a `.env` file with the contents of `.env.sample`. Go to https://console.cloud.google.com/apis/dashboard and create a API key for Drive API and OAuth Consent Screen Client ID. Set these values in `.env` file.
+
+4. Run the code locally.
+
+```
+yarn start
+```
+
+Application should be up and running at [http://localhost:3000](http://localhost:3000).
